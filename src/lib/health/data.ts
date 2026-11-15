@@ -298,7 +298,7 @@ export const CREW: Astronaut[] = [
   },
 ];
 
-export const getAstronaut = (id: string) => CREW.find((a) => a.id === id) ?? CREW[0];
+export const getAstronaut = (id: string): Astronaut => CREW.find((a) => a.id === id) ?? CREW[0]!;
 
 export interface DayRecord {
   ts: number;
@@ -416,8 +416,16 @@ function buildHistory(a: Astronaut, index: number): DayRecord[] {
 export const HISTORY: Record<string, DayRecord[]> = Object.fromEntries(
   CREW.map((a, i) => [a.id, buildHistory(a, i)]),
 );
-export const latest = (id: string) => HISTORY[id][HISTORY[id].length - 1];
-export const previous = (id: string) => HISTORY[id][HISTORY[id].length - 2];
+/** Day-by-day history for one astronaut (falls back to the first crew member). */
+export const historyOf = (id: string): DayRecord[] => HISTORY[id] ?? HISTORY[CREW[0]!.id]!;
+export const latest = (id: string): DayRecord => {
+  const h = historyOf(id);
+  return h[h.length - 1]!;
+};
+export const previous = (id: string): DayRecord => {
+  const h = historyOf(id);
+  return h[h.length - 2] ?? h[h.length - 1]!;
+};
 
 const OVERALL_METRICS: MetricKey[] = [
   "hr",
@@ -663,8 +671,8 @@ function olderAlerts(): CrewAlert[] {
   ];
   const out: CrewAlert[] = [];
   for (let i = 0; i < 34; i++) {
-    const tpl = templates[Math.floor(r() * templates.length)];
-    const who = CREW[Math.floor(r() * CREW.length)];
+    const tpl = templates[Math.floor(r() * templates.length)]!;
+    const who = CREW[Math.floor(r() * CREW.length)]!;
     out.push({
       ...tpl,
       id: `AL-${2603 - i}`,
