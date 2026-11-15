@@ -8,7 +8,13 @@ import { METRIC_ICON } from "@/components/boo/metric-icons";
 import { PageHeader, StatusPill, Surface } from "@/components/boo/ui";
 
 const fmtWhen = (iso: string) =>
-  new Date(iso).toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit", hour12: false });
+  new Date(iso).toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
 
 export function PersonalAlerts() {
   const q = useMyReadings();
@@ -29,7 +35,9 @@ export function PersonalAlerts() {
             <ShieldCheck className="size-10 text-success" />
             <p className="font-display text-xl font-bold text-foreground">No alerts</p>
             <p className="text-sm text-muted-foreground">
-              {(q.data ?? []).length === 0 ? "No data yet. Log a reading from your dashboard." : "All your readings are in the healthy range."}
+              {(q.data ?? []).length === 0
+                ? "No data yet. Log a reading from your dashboard."
+                : "All your readings are in the healthy range."}
             </p>
           </div>
         ) : (
@@ -39,7 +47,12 @@ export function PersonalAlerts() {
               const Icon = METRIC_ICON[a.reading.metric];
               return (
                 <li key={a.reading.id} className="flex flex-wrap items-start gap-4 py-4">
-                  <span className={cn("inline-flex size-11 shrink-0 items-center justify-center rounded-2xl", STATUS_STYLE[a.status].soft)}>
+                  <span
+                    className={cn(
+                      "inline-flex size-11 shrink-0 items-center justify-center rounded-2xl",
+                      STATUS_STYLE[a.status].soft,
+                    )}
+                  >
                     <Icon className={cn("size-5", STATUS_STYLE[a.status].text)} />
                   </span>
                   <div className="min-w-0 flex-1">
@@ -50,7 +63,9 @@ export function PersonalAlerts() {
                       </span>
                     </p>
                     <p className="text-sm text-muted-foreground">{a.advice}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">{fmtWhen(a.reading.recorded_at)}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {fmtWhen(a.reading.recorded_at)}
+                    </p>
                   </div>
                   <div className="flex items-center gap-2">
                     <StatusPill status={a.status} />
@@ -66,7 +81,8 @@ export function PersonalAlerts() {
                         onClick={() =>
                           ack.mutate(a.reading.id, {
                             onSuccess: () => toast.success("Alert acknowledged"),
-                            onError: (e) => toast.error("Couldn't update alert", { description: e.message }),
+                            onError: (e) =>
+                              toast.error("Couldn't update alert", { description: e.message }),
                           })
                         }
                       >

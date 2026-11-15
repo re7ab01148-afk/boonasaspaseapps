@@ -15,8 +15,12 @@ const ONBOARD_STEP: Partial<Record<MetricKey, string>> = {
 export function marsSteps(metric: MetricKey, severity: Status, firstStep: string): string[] {
   const steps = [firstStep, ONBOARD_STEP[metric] ?? ONBOARD_STEP.hr!];
   if (severity === "critical") {
-    steps.push("Do not wait for Earth: the crew medical officer leads care using the on-board medical kit.");
+    steps.push(
+      "Do not wait for Earth: the crew medical officer leads care using the on-board medical kit.",
+    );
   }
-  steps.push("Re-measure and log again. Mission Control reads this in 20 min; a reply takes at least 40 min.");
+  steps.push(
+    "Re-measure and log again. Mission Control reads this in 20 min; a reply takes at least 40 min.",
+  );
   return steps;
 }

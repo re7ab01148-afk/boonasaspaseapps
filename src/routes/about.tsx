@@ -7,7 +7,9 @@ import {
   LayoutDashboard,
   Cloud,
   Users,
-  ExternalLink, GraduationCap } from "lucide-react";
+  ExternalLink,
+  GraduationCap,
+} from "lucide-react";
 import { PageHeader, SectionHead, Surface } from "@/components/boo/ui";
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -88,11 +90,11 @@ function About() {
         <Surface>
           <SectionHead title="Our solution" />
           <p className="text-sm leading-relaxed text-muted-foreground">
-            BOO is a smart health companion. A smart helmet and simple manual logs feed one app
-            that compares every value with reference ranges, colors it green, amber or red, raises
-            Info, Warning or Critical alerts with a clear next step, and lets the astronaut
-            acknowledge or escalate to the flight surgeon. In Mars Mode it switches to on-board
-            decision support because Earth can't answer in time.
+            BOO is a smart health companion. A smart helmet and simple manual logs feed one app that
+            compares every value with reference ranges, colors it green, amber or red, raises Info,
+            Warning or Critical alerts with a clear next step, and lets the astronaut acknowledge or
+            escalate to the flight surgeon. In Mars Mode it switches to on-board decision support
+            because Earth can't answer in time.
           </p>
         </Surface>
       </div>
@@ -161,10 +163,14 @@ function About() {
         </Surface>
       </div>
       <Surface>
-        <SectionHead icon={<GraduationCap />} title="Who made BOO" sub="NASA Space Apps Challenge 2026" />
+        <SectionHead
+          icon={<GraduationCap />}
+          title="Who made BOO"
+          sub="NASA Space Apps Challenge 2026"
+        />
         <p className="text-sm leading-relaxed text-muted-foreground">
-          BOO was created by Egyptian students from Elsewedy University of Technology and Badr University for the NASA
-          Space Apps Challenge 2026 hackathon (6th of October).
+          BOO was created by Egyptian students from Elsewedy University of Technology and Badr
+          University for the NASA Space Apps Challenge 2026 hackathon (6th of October).
         </p>
         <div className="mt-4 flex flex-wrap items-center gap-3 rounded-2xl bg-muted p-4">
           <span className="text-xs font-bold tracking-[0.18em] text-primary uppercase">Team</span>

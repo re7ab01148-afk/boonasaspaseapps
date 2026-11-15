@@ -505,7 +505,10 @@ function Dashboard() {
             {logged.slice(0, 24).map((r) => {
               const s = statusOf(r.metric, r.value);
               return (
-                <div key={r.id} className={cn("rounded-2xl border px-4 py-3", STATUS_STYLE[s].pill)}>
+                <div
+                  key={r.id}
+                  className={cn("rounded-2xl border px-4 py-3", STATUS_STYLE[s].pill)}
+                >
                   <p className="text-xs font-semibold">{METRICS[r.metric].label}</p>
                   <p className="font-display text-lg font-bold text-foreground">
                     {r.value} {METRICS[r.metric].unit}

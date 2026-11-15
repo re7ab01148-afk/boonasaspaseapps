@@ -24,7 +24,11 @@ export function MarsPanel({ alerts }: { alerts: MarsAlert[] }) {
   const top = alerts.slice(0, 2);
   return (
     <Surface className="border-primary/30 bg-gradient-sky">
-      <SectionHead icon={<Orbit />} title="Mars Mode · autonomous care" sub="20-minute one-way signal delay to Earth" />
+      <SectionHead
+        icon={<Orbit />}
+        title="Mars Mode · autonomous care"
+        sub="20-minute one-way signal delay to Earth"
+      />
       <div className="grid gap-3 sm:grid-cols-3">
         {[
           ["Message sent now reaches Earth", now ? `${fmtTime(now + 1_200_000)} UTC` : "–"],
@@ -40,15 +44,24 @@ export function MarsPanel({ alerts }: { alerts: MarsAlert[] }) {
       <div className="mt-4 space-y-3">
         {top.length === 0 ? (
           <p className="flex items-center gap-2 rounded-2xl bg-card p-3 text-sm text-muted-foreground ring-1 ring-border">
-            <ShieldCheck className="size-4 text-success" /> No active alerts. The on-board system keeps watching your readings.
+            <ShieldCheck className="size-4 text-success" /> No active alerts. The on-board system
+            keeps watching your readings.
           </p>
         ) : (
           top.map((a) => (
             <div
               key={a.id}
-              className={cn("rounded-2xl border bg-card p-3", a.severity === "critical" ? "border-destructive/40" : "border-warning/50")}
+              className={cn(
+                "rounded-2xl border bg-card p-3",
+                a.severity === "critical" ? "border-destructive/40" : "border-warning/50",
+              )}
             >
-              <p className={cn("flex items-center gap-1.5 text-sm font-bold", STATUS_STYLE[a.severity].text)}>
+              <p
+                className={cn(
+                  "flex items-center gap-1.5 text-sm font-bold",
+                  STATUS_STYLE[a.severity].text,
+                )}
+              >
                 <ShieldAlert className="size-4" /> {a.title}
               </p>
               <ol className="mt-1.5 list-decimal space-y-1 ps-5 text-xs text-muted-foreground">

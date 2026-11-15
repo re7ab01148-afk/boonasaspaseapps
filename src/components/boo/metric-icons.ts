@@ -1,4 +1,16 @@
-import { Candy, Droplets, Eye, Gauge, HeartPulse, Moon, Radiation, Smile, Thermometer, Wind, type LucideIcon } from "lucide-react";
+import {
+  Candy,
+  Droplets,
+  Eye,
+  Gauge,
+  HeartPulse,
+  Moon,
+  Radiation,
+  Smile,
+  Thermometer,
+  Wind,
+  type LucideIcon,
+} from "lucide-react";
 import type { MetricKey } from "@/lib/health/metrics";
 
 export const METRIC_ICON: Record<MetricKey, LucideIcon> = {

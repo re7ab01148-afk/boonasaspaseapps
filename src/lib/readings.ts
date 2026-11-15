@@ -26,7 +26,11 @@ export function useMyReadings() {
         .order("recorded_at", { ascending: false })
         .limit(1000);
       if (error) throw error;
-      return (data ?? []).map((r) => ({ ...r, metric: r.metric as MetricKey, value: Number(r.value) }));
+      return (data ?? []).map((r) => ({
+        ...r,
+        metric: r.metric as MetricKey,
+        value: Number(r.value),
+      }));
     },
   });
 }
@@ -37,7 +41,9 @@ export function useAddReading() {
   return useMutation({
     mutationFn: async (r: { metric: MetricKey; value: number }) => {
       if (!user) throw new Error("Not signed in");
-      const { error } = await supabase.from("readings").insert({ metric: r.metric, value: r.value, user_id: user.id });
+      const { error } = await supabase
+        .from("readings")
+        .insert({ metric: r.metric, value: r.value, user_id: user.id });
       if (error) throw error;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: KEY }),

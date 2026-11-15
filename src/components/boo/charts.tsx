@@ -1,4 +1,15 @@
-import { Area, AreaChart, CartesianGrid, Line, LineChart, ReferenceArea, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  Line,
+  LineChart,
+  ReferenceArea,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { METRICS, type MetricKey } from "@/lib/health/metrics";
 
 export const tooltipStyle = {
@@ -10,14 +21,30 @@ export const tooltipStyle = {
   color: "var(--foreground)",
 };
 
-export function Sparkline({ data, color, height = 44 }: { data: number[]; color: string; height?: number }) {
+export function Sparkline({
+  data,
+  color,
+  height = 44,
+}: {
+  data: number[];
+  color: string;
+  height?: number;
+}) {
   const rows = data.map((v, i) => ({ i, v }));
   return (
     <div style={{ height }} className="w-full">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={rows} margin={{ top: 4, right: 2, bottom: 4, left: 2 }}>
           <YAxis hide domain={["dataMin - 1", "dataMax + 1"]} />
-          <Line type="monotone" dataKey="v" stroke={color} strokeWidth={2.2} dot={false} animationDuration={900} animationEasing="ease-out" />
+          <Line
+            type="monotone"
+            dataKey="v"
+            stroke={color}
+            strokeWidth={2.2}
+            dot={false}
+            animationDuration={900}
+            animationEasing="ease-out"
+          />
         </LineChart>
       </ResponsiveContainer>
     </div>
@@ -56,9 +83,28 @@ export function TrendChart<T extends object>({
             </linearGradient>
           </defs>
           <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="4 4" />
-          {showBand && <ReferenceArea y1={m.normal[0]} y2={Math.min(m.normal[1], (domain ?? m.axis)[1])} fill="var(--success)" fillOpacity={0.06} />}
-          <XAxis dataKey={xKey} tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} minTickGap={24} />
-          <YAxis domain={domain ?? m.axis} tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} width={46} />
+          {showBand && (
+            <ReferenceArea
+              y1={m.normal[0]}
+              y2={Math.min(m.normal[1], (domain ?? m.axis)[1])}
+              fill="var(--success)"
+              fillOpacity={0.06}
+            />
+          )}
+          <XAxis
+            dataKey={xKey}
+            tickLine={false}
+            axisLine={false}
+            tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
+            minTickGap={24}
+          />
+          <YAxis
+            domain={domain ?? m.axis}
+            tickLine={false}
+            axisLine={false}
+            tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
+            width={46}
+          />
           <Tooltip contentStyle={tooltipStyle} formatter={(v) => [`${v} ${m.unit}`, m.label]} />
           <Area
             type="monotone"

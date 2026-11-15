@@ -58,18 +58,55 @@ export function IssTracker() {
       ) : (
         <>
           <div className="overflow-hidden rounded-2xl bg-gradient-sky ring-1 ring-border" dir="ltr">
-            <svg viewBox={`0 0 ${MAP_W} ${MAP_H}`} className="block h-auto w-full" role="img" aria-label="ISS position on a world grid">
+            <svg
+              viewBox={`0 0 ${MAP_W} ${MAP_H}`}
+              className="block h-auto w-full"
+              role="img"
+              aria-label="ISS position on a world grid"
+            >
               {[-60, -30, 0, 30, 60].map((lat) => (
-                <line key={lat} x1={0} x2={MAP_W} y1={py(lat)} y2={py(lat)} className="stroke-border" strokeDasharray={lat === 0 ? undefined : "3 4"} />
+                <line
+                  key={lat}
+                  x1={0}
+                  x2={MAP_W}
+                  y1={py(lat)}
+                  y2={py(lat)}
+                  className="stroke-border"
+                  strokeDasharray={lat === 0 ? undefined : "3 4"}
+                />
               ))}
               {[-120, -60, 0, 60, 120].map((lon) => (
-                <line key={lon} y1={0} y2={MAP_H} x1={px(lon)} x2={px(lon)} className="stroke-border" strokeDasharray="3 4" />
+                <line
+                  key={lon}
+                  y1={0}
+                  y2={MAP_H}
+                  x1={px(lon)}
+                  x2={px(lon)}
+                  className="stroke-border"
+                  strokeDasharray="3 4"
+                />
               ))}
               {trail.length > 1 && (
-                <polyline fill="none" className="stroke-primary/50" strokeWidth={1.5} points={trail.map(([lo, la]) => `${px(lo)},${py(la)}`).join(" ")} />
+                <polyline
+                  fill="none"
+                  className="stroke-primary/50"
+                  strokeWidth={1.5}
+                  points={trail.map(([lo, la]) => `${px(lo)},${py(la)}`).join(" ")}
+                />
               )}
-              <circle cx={px(q.data.longitude)} cy={py(q.data.latitude)} r={10} className="animate-pulse fill-primary/20" />
-              <circle cx={px(q.data.longitude)} cy={py(q.data.latitude)} r={4.5} className="fill-primary stroke-card" strokeWidth={2} />
+              <circle
+                cx={px(q.data.longitude)}
+                cy={py(q.data.latitude)}
+                r={10}
+                className="animate-pulse fill-primary/20"
+              />
+              <circle
+                cx={px(q.data.longitude)}
+                cy={py(q.data.latitude)}
+                r={4.5}
+                className="fill-primary stroke-card"
+                strokeWidth={2}
+              />
             </svg>
           </div>
           <div className="mt-3 grid grid-cols-2 gap-3">
@@ -86,7 +123,8 @@ export function IssTracker() {
             ))}
           </div>
           <p className="mt-2 text-xs text-muted-foreground">
-            Currently in {q.data.visibility === "daylight" ? "daylight" : "Earth's shadow"} · wheretheiss.at
+            Currently in {q.data.visibility === "daylight" ? "daylight" : "Earth's shadow"} ·
+            wheretheiss.at
           </p>
         </>
       )}

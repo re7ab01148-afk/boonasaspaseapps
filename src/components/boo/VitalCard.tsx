@@ -1,5 +1,12 @@
 import { cn } from "@/lib/utils";
-import { METRICS, STATUS_STYLE, formatValue, isManualMetric, statusOf, type MetricKey } from "@/lib/health/metrics";
+import {
+  METRICS,
+  STATUS_STYLE,
+  formatValue,
+  isManualMetric,
+  statusOf,
+  type MetricKey,
+} from "@/lib/health/metrics";
 import { Sparkline } from "./charts";
 import { METRIC_ICON } from "./metric-icons";
 import { Delta, ManualTag, StatusPill } from "./ui";
@@ -37,7 +44,12 @@ export function VitalCard({
       )}
     >
       <div className="flex items-center justify-between gap-1">
-        <span className={cn("inline-flex size-9 shrink-0 items-center justify-center rounded-xl", STATUS_STYLE[status].soft)}>
+        <span
+          className={cn(
+            "inline-flex size-9 shrink-0 items-center justify-center rounded-xl",
+            STATUS_STYLE[status].soft,
+          )}
+        >
           <Icon className={cn("size-[18px]", STATUS_STYLE[status].text)} />
         </span>
         <StatusPill status={status} />
@@ -61,7 +73,10 @@ export function VitalCard({
             aria-label="Daily water goal"
           >
             <div
-              className={cn("h-full rounded-full transition-[width] duration-1000", value >= goal ? "bg-success" : STATUS_STYLE[status].dot)}
+              className={cn(
+                "h-full rounded-full transition-[width] duration-1000",
+                value >= goal ? "bg-success" : STATUS_STYLE[status].dot,
+              )}
               style={{ width: `${Math.min(100, (value / goal) * 100)}%` }}
             />
           </div>

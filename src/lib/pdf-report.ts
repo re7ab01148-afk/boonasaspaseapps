@@ -3,7 +3,14 @@ export interface ReportInput {
   person: string;
   subtitle: string;
   vitals: { label: string; value: string; status: string }[];
-  alerts: { when: string; severity: string; title: string; value: string; action: string; status: string }[];
+  alerts: {
+    when: string;
+    severity: string;
+    title: string;
+    value: string;
+    action: string;
+    status: string;
+  }[];
   note: string;
 }
 
@@ -29,7 +36,9 @@ export async function downloadHealthReport(r: ReportInput) {
   doc.setFontSize(12);
   doc.setFont("helvetica", "normal");
   doc.text(r.title, 44, 64);
-  doc.text(new Date().toISOString().slice(0, 16).replace("T", " ") + " UTC", W - 44, 64, { align: "right" });
+  doc.text(new Date().toISOString().slice(0, 16).replace("T", " ") + " UTC", W - 44, 64, {
+    align: "right",
+  });
   y = 120;
   doc.setTextColor(20, 24, 40);
   doc.setFont("helvetica", "bold");
@@ -54,7 +63,13 @@ export async function downloadHealthReport(r: ReportInput) {
     y += 16;
   };
   const tone = (s: string): [number, number, number] =>
-    /crit/i.test(s) ? [220, 38, 38] : /warn|watch/i.test(s) ? [202, 138, 4] : /info/i.test(s) ? [37, 99, 235] : [22, 163, 74];
+    /crit/i.test(s)
+      ? [220, 38, 38]
+      : /warn|watch/i.test(s)
+        ? [202, 138, 4]
+        : /info/i.test(s)
+          ? [37, 99, 235]
+          : [22, 163, 74];
 
   section("Latest vitals");
   doc.setFontSize(10);

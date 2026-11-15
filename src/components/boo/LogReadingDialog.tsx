@@ -2,15 +2,46 @@ import { useState } from "react";
 import { Loader2, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { METRICS, STATUS_STYLE, isManualMetric, recommend, statusOf, type MetricKey } from "@/lib/health/metrics";
+import {
+  METRICS,
+  STATUS_STYLE,
+  isManualMetric,
+  recommend,
+  statusOf,
+  type MetricKey,
+} from "@/lib/health/metrics";
 import { ManualTag, StatusPill } from "./ui";
 
-const LOGGABLE: MetricKey[] = ["hr", "temp", "spo2", "sys", "dia", "glucose", "sleep", "mood", "iop", "hydration"];
+const LOGGABLE: MetricKey[] = [
+  "hr",
+  "temp",
+  "spo2",
+  "sys",
+  "dia",
+  "glucose",
+  "sleep",
+  "mood",
+  "iop",
+  "hydration",
+];
 
 export interface LoggedReading {
   metric: MetricKey;
@@ -37,7 +68,9 @@ export function LogReadingDialog({ onSave }: { onSave: (r: LoggedReading) => Pro
       <DialogContent className="rounded-3xl sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="font-display text-xl">Log a health reading</DialogTitle>
-          <DialogDescription>Type a value from any instrument. BOO checks it instantly against safe ranges.</DialogDescription>
+          <DialogDescription>
+            Type a value from any instrument. BOO checks it instantly against safe ranges.
+          </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4">
           <div className="grid gap-2">
@@ -66,7 +99,9 @@ export function LogReadingDialog({ onSave }: { onSave: (r: LoggedReading) => Pro
                 placeholder={`e.g. ${m.normal[0]}`}
                 className="h-12 rounded-xl pr-16 font-display text-lg"
               />
-              <span className="absolute top-1/2 right-4 -translate-y-1/2 text-sm font-semibold text-muted-foreground">{m.unit}</span>
+              <span className="absolute top-1/2 right-4 -translate-y-1/2 text-sm font-semibold text-muted-foreground">
+                {m.unit}
+              </span>
             </div>
             <p className="text-xs text-muted-foreground">
               Healthy range: {m.normal[0]}–{m.normal[1]} {m.unit}
@@ -76,7 +111,9 @@ export function LogReadingDialog({ onSave }: { onSave: (r: LoggedReading) => Pro
           {status && (
             <div className={cn("rounded-2xl border p-4", STATUS_STYLE[status].pill)}>
               <StatusPill status={status} />
-              <p className="mt-2 text-sm font-medium text-foreground">{recommend(metric, status)}</p>
+              <p className="mt-2 text-sm font-medium text-foreground">
+                {recommend(metric, status)}
+              </p>
             </div>
           )}
           <Button
@@ -87,11 +124,15 @@ export function LogReadingDialog({ onSave }: { onSave: (r: LoggedReading) => Pro
               setSaving(true);
               try {
                 await onSave({ metric, value });
-                toast.success(`${m.label} saved`, { description: `${value} ${m.unit} · ${status ? status.toUpperCase() : ""}` });
+                toast.success(`${m.label} saved`, {
+                  description: `${value} ${m.unit} · ${status ? status.toUpperCase() : ""}`,
+                });
                 setRaw("");
                 setOpen(false);
               } catch (err) {
-                toast.error("Couldn't save reading", { description: err instanceof Error ? err.message : "Please try again." });
+                toast.error("Couldn't save reading", {
+                  description: err instanceof Error ? err.message : "Please try again.",
+                });
               } finally {
                 setSaving(false);
               }

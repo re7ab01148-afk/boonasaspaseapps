@@ -1,5 +1,19 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-import { ALERTS, getAstronaut, type AlertState, type Astronaut, type CrewAlert } from "@/lib/health/data";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
+import {
+  ALERTS,
+  getAstronaut,
+  type AlertState,
+  type Astronaut,
+  type CrewAlert,
+} from "@/lib/health/data";
 
 interface AppState {
   astronaut: Astronaut;
@@ -44,10 +58,20 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     setOverrides((o) => ({ ...o, [id]: state }));
   }, []);
 
-  const alerts = useMemo(() => ALERTS.map((a) => (overrides[a.id] ? { ...a, state: overrides[a.id] } : a)), [overrides]);
+  const alerts = useMemo(
+    () => ALERTS.map((a) => (overrides[a.id] ? { ...a, state: overrides[a.id] } : a)),
+    [overrides],
+  );
 
   const value = useMemo(
-    () => ({ astronaut: getAstronaut(astronautId), setAstronautId, marsMode, setMarsMode, alerts, setAlertState }),
+    () => ({
+      astronaut: getAstronaut(astronautId),
+      setAstronautId,
+      marsMode,
+      setMarsMode,
+      alerts,
+      setAlertState,
+    }),
     [astronautId, marsMode, alerts, setAlertState],
   );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

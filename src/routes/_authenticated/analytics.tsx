@@ -25,7 +25,13 @@ import { TrendChart, tooltipStyle } from "@/components/boo/charts";
 import { METRIC_ICON } from "@/components/boo/metric-icons";
 import { useAppState } from "@/lib/app-state";
 import { HISTORY, fmtWeekday, fmtShortDate } from "@/lib/health/data";
-import { METRICS, STATUS_STYLE, isManualMetric, statusOf, type MetricKey } from "@/lib/health/metrics";
+import {
+  METRICS,
+  STATUS_STYLE,
+  isManualMetric,
+  statusOf,
+  type MetricKey,
+} from "@/lib/health/metrics";
 import { cn } from "@/lib/utils";
 
 const title = "Analytics · BOO Astronaut Health";

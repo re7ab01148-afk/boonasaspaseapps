@@ -6,8 +6,22 @@ import heroImg from "@/assets/station-hero.jpg";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/auth";
 import { useAppState } from "@/lib/app-state";
-import { METRICS, STATUS_LABEL, STATUS_STYLE, recommend, statusOf, worstStatus, type MetricKey } from "@/lib/health/metrics";
-import { alertsFromReadings, latestByMetric, useAddReading, useMyReadings, type Reading } from "@/lib/readings";
+import {
+  METRICS,
+  STATUS_LABEL,
+  STATUS_STYLE,
+  recommend,
+  statusOf,
+  worstStatus,
+  type MetricKey,
+} from "@/lib/health/metrics";
+import {
+  alertsFromReadings,
+  latestByMetric,
+  useAddReading,
+  useMyReadings,
+  type Reading,
+} from "@/lib/readings";
 import { downloadHealthReport } from "@/lib/pdf-report";
 import { LogReadingDialog } from "@/components/boo/LogReadingDialog";
 import { EmergencySimulator } from "@/components/boo/EmergencySimulator";
@@ -15,9 +29,26 @@ import { MarsPanel } from "@/components/boo/MarsPanel";
 import { VitalCard } from "@/components/boo/VitalCard";
 import { SectionHead, StatusPill, Surface } from "@/components/boo/ui";
 
-const ORDER: MetricKey[] = ["hr", "temp", "spo2", "sys", "dia", "glucose", "sleep", "mood", "iop", "hydration"];
+const ORDER: MetricKey[] = [
+  "hr",
+  "temp",
+  "spo2",
+  "sys",
+  "dia",
+  "glucose",
+  "sleep",
+  "mood",
+  "iop",
+  "hydration",
+];
 const fmtWhen = (iso: string) =>
-  new Date(iso).toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit", hour12: false });
+  new Date(iso).toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
 
 export function PersonalDashboard() {
   const { displayName } = useAuth();
@@ -30,7 +61,10 @@ export function PersonalDashboard() {
   const metrics = ORDER.filter((m) => latest[m]);
   const alerts = alertsFromReadings(readings);
   const open = alerts.filter((a) => !a.reading.acknowledged);
-  const overall = metrics.length === 0 ? "normal" : worstStatus(metrics.map((m) => statusOf(m, latest[m]!.value)));
+  const overall =
+    metrics.length === 0
+      ? "normal"
+      : worstStatus(metrics.map((m) => statusOf(m, latest[m]!.value)));
   const firstName = displayName.split(" ")[0] || "there";
 
   const historyOf = (m: MetricKey) =>
@@ -71,7 +105,13 @@ export function PersonalDashboard() {
   return (
     <div className="space-y-6">
       <section className="relative overflow-hidden rounded-[2rem] bg-card shadow-card ring-1 ring-border">
-        <img src={heroImg} alt="Astronaut inside the space station" width={1600} height={912} className="absolute inset-0 h-full w-full object-cover object-[85%_30%]" />
+        <img
+          src={heroImg}
+          alt="Astronaut inside the space station"
+          width={1600}
+          height={912}
+          className="absolute inset-0 h-full w-full object-cover object-[85%_30%]"
+        />
         <div className="absolute inset-0 bg-gradient-to-r from-card via-card/75 to-transparent" />
         <div className="relative grid gap-6 p-6 md:p-10 lg:grid-cols-[1.3fr_1fr]">
           <div className="animate-rise">
@@ -100,12 +140,25 @@ export function PersonalDashboard() {
             <div
               className={cn(
                 "w-full max-w-sm rounded-3xl border bg-card/90 p-5 backdrop-blur-md",
-                overall === "critical" ? "border-destructive/30" : overall === "watch" ? "border-warning/40" : "border-success/30",
+                overall === "critical"
+                  ? "border-destructive/30"
+                  : overall === "watch"
+                    ? "border-warning/40"
+                    : "border-success/30",
               )}
             >
               <div className="flex items-center gap-3">
-                <span className={cn("inline-flex size-11 items-center justify-center rounded-2xl", STATUS_STYLE[overall].soft)}>
-                  {overall === "normal" ? <ShieldCheck className="size-6 text-success" /> : <Siren className={cn("size-6", STATUS_STYLE[overall].text)} />}
+                <span
+                  className={cn(
+                    "inline-flex size-11 items-center justify-center rounded-2xl",
+                    STATUS_STYLE[overall].soft,
+                  )}
+                >
+                  {overall === "normal" ? (
+                    <ShieldCheck className="size-6 text-success" />
+                  ) : (
+                    <Siren className={cn("size-6", STATUS_STYLE[overall].text)} />
+                  )}
                 </span>
                 <div>
                   <p className="font-display text-lg font-bold text-foreground">
@@ -127,7 +180,11 @@ export function PersonalDashboard() {
                 </div>
               </div>
               {open.length > 0 && (
-                <Button asChild variant={overall === "critical" ? "alert" : "soft"} className="mt-4 w-full">
+                <Button
+                  asChild
+                  variant={overall === "critical" ? "alert" : "soft"}
+                  className="mt-4 w-full"
+                >
                   <Link to="/alerts">Review & take action</Link>
                 </Button>
               )}
@@ -159,7 +216,8 @@ export function PersonalDashboard() {
           </span>
           <h2 className="text-2xl font-bold text-foreground">No data yet</h2>
           <p className="max-w-md text-sm text-muted-foreground">
-            Add heart rate, temperature, blood oxygen, blood pressure, blood sugar, sleep, mood or water from any instrument. Only you can see your readings.
+            Add heart rate, temperature, blood oxygen, blood pressure, blood sugar, sleep, mood or
+            water from any instrument. Only you can see your readings.
           </p>
           <div className="mt-2">{logButton}</div>
         </Surface>
@@ -192,7 +250,11 @@ export function PersonalDashboard() {
 function RecentReadings({ readings }: { readings: Reading[] }) {
   return (
     <Surface>
-      <SectionHead icon={<ClipboardList />} title="Your readings" sub="Newest first · saved to your account" />
+      <SectionHead
+        icon={<ClipboardList />}
+        title="Your readings"
+        sub="Newest first · saved to your account"
+      />
       <ul className="divide-y divide-border">
         {readings.slice(0, 30).map((r) => {
           const s = statusOf(r.metric, r.value);
@@ -207,7 +269,9 @@ function RecentReadings({ readings }: { readings: Reading[] }) {
                 {r.value} <span className="text-xs text-muted-foreground">{m.unit}</span>
               </span>
               <StatusPill status={s} />
-              {s !== "normal" && <p className="w-full text-xs text-muted-foreground">{recommend(r.metric, s)}</p>}
+              {s !== "normal" && (
+                <p className="w-full text-xs text-muted-foreground">{recommend(r.metric, s)}</p>
+              )}
             </li>
           );
         })}
