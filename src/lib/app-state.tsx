@@ -59,7 +59,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const alerts = useMemo(
-    () => ALERTS.map((a) => (overrides[a.id] ? { ...a, state: overrides[a.id] } : a)),
+    () => ALERTS.map((a) => ({ ...a, state: overrides[a.id] ?? a.state })),
     [overrides],
   );
 
