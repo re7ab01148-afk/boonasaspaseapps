@@ -29,3 +29,23 @@ describe("demo crew", () => {
     expect(overallStatus("omar")).toBe("critical");
   });
 });
+
+describe("helmet & demo account rules", () => {
+  it("blood pressure and blood sugar are manual until the next helmet version", async () => {
+    const { MANUAL_METRICS, MANUAL_NOTE, isManualMetric } = await import("@/lib/health/metrics");
+    expect(MANUAL_NOTE).toBe("Manual now · Auto in next helmet version");
+    expect([...MANUAL_METRICS].sort()).toEqual(["dia", "glucose", "sys"]);
+    expect(isManualMetric("hr")).toBe(false);
+  });
+  it("the main demo astronaut is Rehab, Commander on the ISS", async () => {
+    const { CREW, DEVICE } = await import("@/lib/health/data");
+    expect(CREW[0]?.name).toBe("Rehab");
+    expect(CREW[0]?.initials).toBe("R");
+    expect(DEVICE.name).toBe("BOO Helmet S2");
+  });
+  it("the alerts badge counts every alert still listed (open + in progress)", async () => {
+    const { ALERTS } = await import("@/lib/health/data");
+    const active = ALERTS.filter((a) => a.state !== "resolved");
+    expect(active.length).toBe(5);
+  });
+});
