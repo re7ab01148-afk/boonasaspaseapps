@@ -19,12 +19,12 @@ import {
   ZAxis,
 } from "recharts";
 import { Button } from "@/components/ui/button";
-import { PageHeader, SectionHead, Surface } from "@/components/boo/ui";
+import { ManualTag, PageHeader, SectionHead, Surface } from "@/components/boo/ui";
 import { TrendChart, tooltipStyle } from "@/components/boo/charts";
 import { METRIC_ICON } from "@/components/boo/metric-icons";
 import { useAppState } from "@/lib/app-state";
 import { HISTORY, fmtWeekday, fmtShortDate } from "@/lib/health/data";
-import { METRICS, STATUS_STYLE, statusOf, type MetricKey } from "@/lib/health/metrics";
+import { METRICS, STATUS_STYLE, isManualMetric, statusOf, type MetricKey } from "@/lib/health/metrics";
 import { cn } from "@/lib/utils";
 
 const title = "Analytics · BOO Astronaut Health";
@@ -155,6 +155,7 @@ function AnalyticsPage() {
             icon={<CalendarDays />}
             title="Blood pressure"
             sub="Systolic & diastolic (mmHg)"
+            action={<ManualTag />}
           />
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
