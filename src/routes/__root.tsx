@@ -13,6 +13,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AppStateProvider } from "@/lib/app-state";
+import { AuthProvider } from "@/lib/auth";
 import { AppShell } from "@/components/boo/AppShell";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -139,12 +140,14 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <AppStateProvider>
-        <AppShell>
-          <Outlet />
-        </AppShell>
-        <Toaster position="top-center" />
-      </AppStateProvider>
+      <AuthProvider>
+        <AppStateProvider>
+          <AppShell>
+            <Outlet />
+          </AppShell>
+          <Toaster position="top-center" />
+        </AppStateProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

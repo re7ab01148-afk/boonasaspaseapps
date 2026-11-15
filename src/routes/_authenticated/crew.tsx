@@ -122,7 +122,7 @@ function Crew() {
                 className="mt-auto w-full"
                 onClick={() => {
                   setAstronautId(a.id);
-                  void navigate({ to: "/" });
+                  void navigate({ to: "/dashboard" });
                 }}
               >
                 Open {a.name.split(" ")[0]}'s dashboard <ArrowRight />

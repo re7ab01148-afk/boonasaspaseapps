@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 export function BooLogo({ compact, className }: { compact?: boolean; className?: string }) {
   return (
-    <Link to="/" className={cn("flex items-center gap-3", className)} aria-label="BOO home">
+    <Link to="/dashboard" className={cn("flex items-center gap-3", className)} aria-label="BOO home">
       <img src={helmet} alt="" width={compact ? 32 : 44} height={compact ? 32 : 44} className={compact ? "size-8" : "size-11"} />
       <span className="leading-none">
         <span className={cn("block font-display font-extrabold tracking-tight text-foreground", compact ? "text-lg" : "text-2xl")}>BOO</span>
