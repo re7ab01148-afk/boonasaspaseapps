@@ -226,7 +226,7 @@ export function PersonalDashboard() {
           <section className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-5">
             {metrics.map((m) => {
               const h = historyOf(m);
-              const prev = h.length > 1 ? h[h.length - 2].value : h[h.length - 1].value;
+              const prev = (h[h.length - 2] ?? h[h.length - 1])?.value ?? latest[m]!.value;
               return (
                 <VitalCard
                   key={m}
