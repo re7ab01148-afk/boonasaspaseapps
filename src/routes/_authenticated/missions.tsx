@@ -22,7 +22,7 @@ import { AstronautAvatar, PageHeader, Ring, SectionHead, Surface } from "@/compo
 import { tooltipStyle } from "@/components/boo/charts";
 import { Progress } from "@/components/ui/progress";
 import { useAppState } from "@/lib/app-state";
-import { BADGES, CREW, HISTORY, TASKS, fmtWeekday, taskDoneByDefault } from "@/lib/health/data";
+import { BADGES, CREW, historyOf, TASKS, fmtWeekday, taskDoneByDefault } from "@/lib/health/data";
 import { XP_PER_LEVEL, levelFromXp } from "@/lib/health/metrics";
 import { cn } from "@/lib/utils";
 

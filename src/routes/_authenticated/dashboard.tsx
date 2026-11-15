@@ -30,7 +30,7 @@ import {
 } from "@/lib/health/metrics";
 import {
   ENVIRONMENTS,
-  HISTORY,
+  historyOf,
   NOW,
   ROUTINE,
   TASKS,
@@ -470,7 +470,7 @@ function Dashboard() {
           <SectionHead icon={<Sparkles />} title="Today's routine" sub="Mission timeline (MT)" />
           <ol className="relative ml-1 space-y-3 border-l border-border pl-5">
             {ROUTINE.map((r) => {
-              const [h, m] = r.time.split(":").map(Number);
+              const [h = 0, m = 0] = r.time.split(":").map(Number);
               const past =
                 h + m / 60 < new Date(NOW).getUTCHours() + new Date(NOW).getUTCMinutes() / 60;
               return (

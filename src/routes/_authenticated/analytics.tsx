@@ -24,7 +24,7 @@ import { ManualTag, PageHeader, SectionHead, Surface } from "@/components/boo/ui
 import { TrendChart, tooltipStyle } from "@/components/boo/charts";
 import { METRIC_ICON } from "@/components/boo/metric-icons";
 import { useAppState } from "@/lib/app-state";
-import { HISTORY, fmtWeekday, fmtShortDate } from "@/lib/health/data";
+import { historyOf, fmtWeekday, fmtShortDate } from "@/lib/health/data";
 import {
   METRICS,
   STATUS_STYLE,
