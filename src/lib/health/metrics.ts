@@ -102,3 +102,8 @@ export function improved(metric: MetricKey, now: number, prev: number): boolean 
   const b = distanceFromNormal(metric, now);
   return a === b ? null : b < a;
 }
+
+/** Readings the helmet can't take yet: they are logged by hand for now. */
+export const MANUAL_METRICS: MetricKey[] = ["sys", "dia", "glucose"];
+export const MANUAL_NOTE = "Manual now · Auto in next helmet version";
+export const isManualMetric = (m: MetricKey) => MANUAL_METRICS.includes(m);

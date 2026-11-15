@@ -24,8 +24,8 @@ describe("XP levels", () => {
 });
 
 describe("demo crew", () => {
-  it("Sarah is all normal and Omar has a critical reading", () => {
-    expect(overallStatus("sarah")).toBe("normal");
+  it("Rehab is all normal and Omar has a critical reading", () => {
+    expect(overallStatus("rehab")).toBe("normal");
     expect(overallStatus("omar")).toBe("critical");
   });
 });

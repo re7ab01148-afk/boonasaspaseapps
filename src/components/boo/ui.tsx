@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { ArrowDownRight, ArrowUpRight, Minus } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { METRICS, STATUS_LABEL, STATUS_STYLE, improved, type MetricKey, type Status } from "@/lib/health/metrics";
+import { MANUAL_NOTE, METRICS, STATUS_LABEL, STATUS_STYLE, improved, type MetricKey, type Status } from "@/lib/health/metrics";
 import type { Astronaut } from "@/lib/health/data";
 
 const AVATAR_BG: Record<Astronaut["color"], string> = {
@@ -129,6 +129,15 @@ export function Delta({ now, prev, unit, metric }: { now: number; prev: number; 
       {d > 0 ? "+" : d < 0 ? "−" : "±"}
       {Math.abs(d)}
       {unit}
+    </span>
+  );
+}
+
+/** Small tag for readings the helmet doesn't measure automatically yet. */
+export function ManualTag({ className }: { className?: string }) {
+  return (
+    <span className={cn("inline-flex items-center rounded-full bg-accent px-2 py-0.5 text-[10px] leading-tight font-bold text-accent-foreground", className)}>
+      {MANUAL_NOTE}
     </span>
   );
 }

@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
-import { METRICS, STATUS_STYLE, formatValue, statusOf, type MetricKey } from "@/lib/health/metrics";
+import { METRICS, STATUS_STYLE, formatValue, isManualMetric, statusOf, type MetricKey } from "@/lib/health/metrics";
 import { Sparkline } from "./charts";
 import { METRIC_ICON } from "./metric-icons";
-import { Delta, StatusPill } from "./ui";
+import { Delta, ManualTag, StatusPill } from "./ui";
 
 export function VitalCard({
   metric,
@@ -48,6 +48,7 @@ export function VitalCard({
           {display ?? formatValue(metric, value)}
           <span className="text-sm font-semibold text-muted-foreground">{m.unit}</span>
         </p>
+        {isManualMetric(metric) && <ManualTag className="mt-1.5" />}
       </div>
       {goal !== undefined && (
         <div>

@@ -69,7 +69,7 @@ export interface Astronaut {
 }
 
 export const CREW: Astronaut[] = [
-  { id: "sarah", name: "Sarah Lindqvist", initials: "SL", role: "Commander", agency: "ESA", country: "Sweden", age: 38, bloodType: "A+", env: "iss", missionName: "Expedition 76", missionDay: 142, missionLength: 186, color: "chart-1", xp: 14280, streak: 41, baseline: { hr: 63, temp: 36.6, spo2: 98, sys: 114, dia: 73, glucose: 92, sleep: 7.4, mood: 4.4, weight: 62 } },
+  { id: "rehab", name: "Rehab", initials: "R", role: "Commander", agency: "ESA", country: "Sweden", age: 38, bloodType: "A+", env: "iss", missionName: "Expedition 76", missionDay: 142, missionLength: 186, color: "chart-1", xp: 14280, streak: 41, baseline: { hr: 63, temp: 36.6, spo2: 98, sys: 114, dia: 73, glucose: 92, sleep: 7.4, mood: 4.4, weight: 62 } },
   { id: "omar", name: "Omar Haddad", initials: "OH", role: "Flight Engineer", agency: "MBRSC", country: "UAE", age: 41, bloodType: "O+", env: "mars", missionName: "Ares Pathfinder I", missionDay: 213, missionLength: 520, color: "chart-3", xp: 12950, streak: 6, baseline: { hr: 68, temp: 36.7, spo2: 97, sys: 121, dia: 78, glucose: 98, sleep: 7, mood: 4, weight: 79 }, condition: "fever" },
   { id: "kenji", name: "Kenji Watanabe", initials: "KW", role: "Mission Specialist", agency: "JAXA", country: "Japan", age: 45, bloodType: "B+", env: "gateway", missionName: "Artemis V", missionDay: 64, missionLength: 90, color: "chart-6", xp: 9870, streak: 12, baseline: { hr: 61, temp: 36.5, spo2: 98, sys: 118, dia: 76, glucose: 95, sleep: 7.1, mood: 4.1, weight: 70 }, condition: "sleep" },
   { id: "amara", name: "Amara Okafor", initials: "AO", role: "Medical Officer", agency: "NASA", country: "USA", age: 36, bloodType: "AB-", env: "iss", missionName: "Expedition 76", missionDay: 142, missionLength: 186, color: "chart-2", xp: 15620, streak: 58, baseline: { hr: 59, temp: 36.6, spo2: 99, sys: 110, dia: 70, glucose: 88, sleep: 7.8, mood: 4.6, weight: 64 } },
@@ -247,7 +247,7 @@ const RECENT_ALERTS: CrewAlert[] = [
   { id: "AL-2609", astronautId: "lucas", metric: "sys", severity: "critical", value: "142/86 mmHg", title: "High blood pressure", message: "Systolic pressure above 140 mmHg for the second time this week during rover EVA prep.", action: "Repeat on both arms after 10 minutes seated. Flight surgeon review scheduled.", ts: NOW - 8_640_000, state: "acknowledged" },
   { id: "AL-2608", astronautId: "kenji", metric: "sleep", severity: "critical", value: "5.4 h", title: "Sleep deprivation", message: "Average sleep is below 6 h for 14 nights. Reaction-time test dropped 11%.", action: "Shift schedule adjusted: +1 h rest block tonight, cabin light protocol L-2.", ts: NOW - 18_000_000, state: "acknowledged" },
   { id: "AL-2607", astronautId: "priya", metric: "mood", severity: "watch", value: "3.0 / 5", title: "Low mood trend", message: "Mood check-ins have trended down for 8 days after a long lunar night.", action: "Private family conference booked for 18:00 MT. Hobby block added.", ts: NOW - 27_000_000, state: "open" },
-  { id: "AL-2606", astronautId: "sarah", metric: "iop", severity: "watch", value: "22 mmHg", title: "Eye pressure slightly high", message: "Right-eye tonometer reading above 21 mmHg. Possible early SANS sign.", action: "Avoid head-down posture; OCT scan scheduled tomorrow 09:00.", ts: NOW - 93_600_000, state: "resolved" },
+  { id: "AL-2606", astronautId: "rehab", metric: "iop", severity: "watch", value: "22 mmHg", title: "Eye pressure slightly high", message: "Right-eye tonometer reading above 21 mmHg. Possible early SANS sign.", action: "Avoid head-down posture; OCT scan scheduled tomorrow 09:00.", ts: NOW - 93_600_000, state: "resolved" },
   { id: "AL-2605", astronautId: "lucas", metric: "spo2", severity: "watch", value: "93 %", title: "Blood oxygen dipped", message: "SpO₂ dipped during rover cabin depress test.", action: "Cabin O₂ partial pressure raised; re-test passed at 97 %.", ts: NOW - 108_000_000, state: "resolved" },
   { id: "AL-2604", astronautId: "amara", metric: "glucose", severity: "watch", value: "152 mg/dL", title: "Post-meal glucose spike", message: "Glucose peaked after a high-carb rehydratable meal.", action: "Swap meal pack M-14 for M-22 on rotation.", ts: NOW - 2 * DAY - 10_800_000, state: "resolved" },
 ];
@@ -287,7 +287,7 @@ export interface HealthTask {
   duration: string;
 }
 export const TASKS: HealthTask[] = [
-  { id: "t1", title: "Morning vitals check", detail: "HR, BP, SpO₂ and temperature with the BOO wristband", xp: 50, category: "Measure", time: "06:30", duration: "4 min" },
+  { id: "t1", title: "Morning vitals check", detail: "HR, BP, SpO₂ and temperature with the BOO smart helmet", xp: 50, category: "Measure", time: "06:30", duration: "4 min" },
   { id: "t2", title: "Blood glucose finger-stick", detail: "Fasting reading before breakfast", xp: 40, category: "Measure", time: "07:00", duration: "2 min" },
   { id: "t3", title: "ARED resistance training", detail: "Squats, deadlifts, heel raises — protect bone & muscle", xp: 120, category: "Move", time: "10:00", duration: "90 min" },
   { id: "t4", title: "Hydration goal 2.5 L", detail: "Log each pouch in the BOO app", xp: 60, category: "Nutrition", time: "All day", duration: "—" },
@@ -337,7 +337,7 @@ export const ROUTINE = [
 ];
 
 export const DEVICE = {
-  name: "BOO Band S2",
+  name: "BOO Helmet S2",
   serial: "BOO-S2-0476-ESA",
   battery: 85,
   connection: "Bluetooth LE · ESP32",
@@ -345,11 +345,13 @@ export const DEVICE = {
   lastSync: NOW - 120_000,
   storage: { used: 1.8, total: 4 },
   sensors: [
-    { name: "Optical HR / SpO₂ (PPG)", status: "OK", accuracy: "± 2 bpm" },
-    { name: "Skin temperature", status: "OK", accuracy: "± 0.1 °C" },
-    { name: "Cuffless blood pressure", status: "Calibrate in 3 d", accuracy: "± 5 mmHg" },
-    { name: "3-axis accelerometer", status: "OK", accuracy: "—" },
+    { name: "Forehead optical HR / SpO₂ (PPG)", status: "OK", accuracy: "± 2 bpm" },
+    { name: "Forehead skin temperature", status: "OK", accuracy: "± 0.1 °C" },
+    { name: "In-helmet CO₂ & breathing sensor", status: "OK", accuracy: "± 50 ppm" },
+    { name: "3-axis head-motion accelerometer", status: "OK", accuracy: "—" },
     { name: "Personal dosimeter", status: "OK", accuracy: "± 3 %" },
+    { name: "Blood pressure", status: "Manual now · Auto in next helmet version", accuracy: "Manual log" },
+    { name: "Blood sugar", status: "Manual now · Auto in next helmet version", accuracy: "Manual log" },
   ],
 };
 

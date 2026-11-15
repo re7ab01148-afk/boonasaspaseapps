@@ -15,7 +15,7 @@ const Ctx = createContext<AppState | null>(null);
 const STORAGE_KEY = "boo-demo-state";
 
 export function AppStateProvider({ children }: { children: ReactNode }) {
-  const [astronautId, setAstronautId] = useState("sarah");
+  const [astronautId, setAstronautId] = useState("rehab");
   const [marsMode, setMarsMode] = useState(false);
   const [overrides, setOverrides] = useState<Record<string, AlertState>>({});
   const [loaded, setLoaded] = useState(false);
