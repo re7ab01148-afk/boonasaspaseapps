@@ -108,7 +108,13 @@ export function PageHeader({
   );
 }
 
-export function Surface({ className, children }: { className?: string | undefined; children: ReactNode }) {
+export function Surface({
+  className,
+  children,
+}: {
+  className?: string | undefined;
+  children: ReactNode;
+}) {
   return <div className={cn("surface p-5", className)}>{children}</div>;
 }
 
