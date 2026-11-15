@@ -9,49 +9,19 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
-import { Route as AlertsRouteImport } from './routes/alerts'
-import { Route as AnalyticsRouteImport } from './routes/analytics'
-import { Route as BodyRouteImport } from './routes/body'
-import { Route as CrewRouteImport } from './routes/crew'
-import { Route as DeviceRouteImport } from './routes/device'
 import { Route as GuideRouteImport } from './routes/guide'
-import { Route as MissionsRouteImport } from './routes/missions'
+import { Route as AuthenticatedAlertsRouteImport } from './routes/_authenticated/alerts'
+import { Route as AuthenticatedAnalyticsRouteImport } from './routes/_authenticated/analytics'
+import { Route as AuthenticatedBodyRouteImport } from './routes/_authenticated/body'
+import { Route as AuthenticatedCrewRouteImport } from './routes/_authenticated/crew'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedDeviceRouteImport } from './routes/_authenticated/device'
+import { Route as AuthenticatedMissionsRouteImport } from './routes/_authenticated/missions'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AlertsRoute = AlertsRouteImport.update({
-  id: '/alerts',
-  path: '/alerts',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AnalyticsRoute = AnalyticsRouteImport.update({
-  id: '/analytics',
-  path: '/analytics',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BodyRoute = BodyRouteImport.update({
-  id: '/body',
-  path: '/body',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CrewRoute = CrewRouteImport.update({
-  id: '/crew',
-  path: '/crew',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DeviceRoute = DeviceRouteImport.update({
-  id: '/device',
-  path: '/device',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GuideRoute = GuideRouteImport.update({
@@ -59,143 +29,131 @@ const GuideRoute = GuideRouteImport.update({
   path: '/guide',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MissionsRoute = MissionsRouteImport.update({
-  id: '/missions',
+const AuthenticatedAlertsRoute = AuthenticatedAlertsRouteImport.update({
+  id: '/_authenticated/alerts',
+  path: '/alerts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAnalyticsRoute = AuthenticatedAnalyticsRouteImport.update({
+  id: '/_authenticated/analytics',
+  path: '/analytics',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedBodyRoute = AuthenticatedBodyRouteImport.update({
+  id: '/_authenticated/body',
+  path: '/body',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedCrewRoute = AuthenticatedCrewRouteImport.update({
+  id: '/_authenticated/crew',
+  path: '/crew',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/_authenticated/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedDeviceRoute = AuthenticatedDeviceRouteImport.update({
+  id: '/_authenticated/device',
+  path: '/device',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedMissionsRoute = AuthenticatedMissionsRouteImport.update({
+  id: '/_authenticated/missions',
   path: '/missions',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/alerts': typeof AlertsRoute
-  '/analytics': typeof AnalyticsRoute
-  '/body': typeof BodyRoute
-  '/crew': typeof CrewRoute
-  '/device': typeof DeviceRoute
   '/guide': typeof GuideRoute
-  '/missions': typeof MissionsRoute
+  '/alerts': typeof AuthenticatedAlertsRoute
+  '/analytics': typeof AuthenticatedAnalyticsRoute
+  '/body': typeof AuthenticatedBodyRoute
+  '/crew': typeof AuthenticatedCrewRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/device': typeof AuthenticatedDeviceRoute
+  '/missions': typeof AuthenticatedMissionsRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/alerts': typeof AlertsRoute
-  '/analytics': typeof AnalyticsRoute
-  '/body': typeof BodyRoute
-  '/crew': typeof CrewRoute
-  '/device': typeof DeviceRoute
   '/guide': typeof GuideRoute
-  '/missions': typeof MissionsRoute
+  '/alerts': typeof AuthenticatedAlertsRoute
+  '/analytics': typeof AuthenticatedAnalyticsRoute
+  '/body': typeof AuthenticatedBodyRoute
+  '/crew': typeof AuthenticatedCrewRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/device': typeof AuthenticatedDeviceRoute
+  '/missions': typeof AuthenticatedMissionsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/alerts': typeof AlertsRoute
-  '/analytics': typeof AnalyticsRoute
-  '/body': typeof BodyRoute
-  '/crew': typeof CrewRoute
-  '/device': typeof DeviceRoute
   '/guide': typeof GuideRoute
-  '/missions': typeof MissionsRoute
+  '/_authenticated/alerts': typeof AuthenticatedAlertsRoute
+  '/_authenticated/analytics': typeof AuthenticatedAnalyticsRoute
+  '/_authenticated/body': typeof AuthenticatedBodyRoute
+  '/_authenticated/crew': typeof AuthenticatedCrewRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/device': typeof AuthenticatedDeviceRoute
+  '/_authenticated/missions': typeof AuthenticatedMissionsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
     | '/about'
+    | '/guide'
     | '/alerts'
     | '/analytics'
     | '/body'
     | '/crew'
+    | '/dashboard'
     | '/device'
-    | '/guide'
     | '/missions'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
     | '/about'
+    | '/guide'
     | '/alerts'
     | '/analytics'
     | '/body'
     | '/crew'
+    | '/dashboard'
     | '/device'
-    | '/guide'
     | '/missions'
   id:
     | '__root__'
-    | '/'
     | '/about'
-    | '/alerts'
-    | '/analytics'
-    | '/body'
-    | '/crew'
-    | '/device'
     | '/guide'
-    | '/missions'
+    | '/_authenticated/alerts'
+    | '/_authenticated/analytics'
+    | '/_authenticated/body'
+    | '/_authenticated/crew'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/device'
+    | '/_authenticated/missions'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  AlertsRoute: typeof AlertsRoute
-  AnalyticsRoute: typeof AnalyticsRoute
-  BodyRoute: typeof BodyRoute
-  CrewRoute: typeof CrewRoute
-  DeviceRoute: typeof DeviceRoute
   GuideRoute: typeof GuideRoute
-  MissionsRoute: typeof MissionsRoute
+  AuthenticatedAlertsRoute: typeof AuthenticatedAlertsRoute
+  AuthenticatedAnalyticsRoute: typeof AuthenticatedAnalyticsRoute
+  AuthenticatedBodyRoute: typeof AuthenticatedBodyRoute
+  AuthenticatedCrewRoute: typeof AuthenticatedCrewRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedDeviceRoute: typeof AuthenticatedDeviceRoute
+  AuthenticatedMissionsRoute: typeof AuthenticatedMissionsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/about': {
       id: '/about'
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/alerts': {
-      id: '/alerts'
-      path: '/alerts'
-      fullPath: '/alerts'
-      preLoaderRoute: typeof AlertsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/analytics': {
-      id: '/analytics'
-      path: '/analytics'
-      fullPath: '/analytics'
-      preLoaderRoute: typeof AnalyticsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/body': {
-      id: '/body'
-      path: '/body'
-      fullPath: '/body'
-      preLoaderRoute: typeof BodyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/crew': {
-      id: '/crew'
-      path: '/crew'
-      fullPath: '/crew'
-      preLoaderRoute: typeof CrewRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/device': {
-      id: '/device'
-      path: '/device'
-      fullPath: '/device'
-      preLoaderRoute: typeof DeviceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/guide': {
@@ -205,26 +163,68 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GuideRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/missions': {
-      id: '/missions'
+    '/_authenticated/alerts': {
+      id: '/_authenticated/alerts'
+      path: '/alerts'
+      fullPath: '/alerts'
+      preLoaderRoute: typeof AuthenticatedAlertsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/analytics': {
+      id: '/_authenticated/analytics'
+      path: '/analytics'
+      fullPath: '/analytics'
+      preLoaderRoute: typeof AuthenticatedAnalyticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/body': {
+      id: '/_authenticated/body'
+      path: '/body'
+      fullPath: '/body'
+      preLoaderRoute: typeof AuthenticatedBodyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/crew': {
+      id: '/_authenticated/crew'
+      path: '/crew'
+      fullPath: '/crew'
+      preLoaderRoute: typeof AuthenticatedCrewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/device': {
+      id: '/_authenticated/device'
+      path: '/device'
+      fullPath: '/device'
+      preLoaderRoute: typeof AuthenticatedDeviceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/missions': {
+      id: '/_authenticated/missions'
       path: '/missions'
       fullPath: '/missions'
-      preLoaderRoute: typeof MissionsRouteImport
+      preLoaderRoute: typeof AuthenticatedMissionsRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  AlertsRoute: AlertsRoute,
-  AnalyticsRoute: AnalyticsRoute,
-  BodyRoute: BodyRoute,
-  CrewRoute: CrewRoute,
-  DeviceRoute: DeviceRoute,
   GuideRoute: GuideRoute,
-  MissionsRoute: MissionsRoute,
+  AuthenticatedAlertsRoute: AuthenticatedAlertsRoute,
+  AuthenticatedAnalyticsRoute: AuthenticatedAnalyticsRoute,
+  AuthenticatedBodyRoute: AuthenticatedBodyRoute,
+  AuthenticatedCrewRoute: AuthenticatedCrewRoute,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedDeviceRoute: AuthenticatedDeviceRoute,
+  AuthenticatedMissionsRoute: AuthenticatedMissionsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
