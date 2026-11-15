@@ -267,7 +267,7 @@ function E({
   let r = (n: string) =>
       h(
         `cursor-pointer transition-all duration-300 outline-none`,
-        T[e[n]],
+        T[e[n] ?? "normal"],
         t === n ? `stroke-primary [stroke-width:2.5]` : `stroke-card [stroke-width:1.5]`,
       ),
     i = (e: string) => ({
