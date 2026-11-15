@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { DEMO_EMAIL, DEMO_PASSWORD } from "@/lib/auth";
+import { DEMO_EMAIL, DEMO_PASSWORD } from "@/lib/demo-constants";
 
 /**
  * Makes sure the shared demo account (Rehab) exists and still has the public demo password.

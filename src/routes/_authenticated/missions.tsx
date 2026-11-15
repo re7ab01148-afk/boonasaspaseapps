@@ -27,7 +27,7 @@ import { cn } from "@/lib/utils";
 
 const title = "Missions & XP · BOO Astronaut Health";
 const description = "Earn XP through healthy habits, unlock badges and climb the crew leaderboard.";
-export const Route = createFileRoute("/missions")({
+export const Route = createFileRoute("/_authenticated/missions")({
   head: () => ({
     meta: [
       { title },

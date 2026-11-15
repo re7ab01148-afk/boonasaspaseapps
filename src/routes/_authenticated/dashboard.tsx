@@ -52,7 +52,7 @@ import { EmergencySimulator } from "@/components/boo/EmergencySimulator";
 import { MarsPanel } from "@/components/boo/MarsPanel";
 import { LogReadingDialog, type LoggedReading } from "@/components/boo/LogReadingDialog";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
     meta: [
       { title: "Dashboard · BOO Astronaut Health" },

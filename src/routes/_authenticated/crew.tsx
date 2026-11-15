@@ -8,7 +8,7 @@ import { useAppState } from "@/lib/app-state";
 import { CREW, ENVIRONMENTS, latest, overallStatus } from "@/lib/health/data";
 import { STATUS_LABEL, STATUS_STYLE, statusOf } from "@/lib/health/metrics";
 import { cn } from "@/lib/utils";
-export const Route = createFileRoute("/crew")({
+export const Route = createFileRoute("/_authenticated/crew")({
   head: () => ({
     meta: [
       { title: "Crew · BOO Astronaut Health" },

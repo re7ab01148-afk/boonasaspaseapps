@@ -4,8 +4,7 @@ import { useRouter } from "@tanstack/react-router";
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
-export const DEMO_EMAIL = "rehab.demo@boo-health.app";
-export const DEMO_PASSWORD = "boo-demo-2026";
+export { DEMO_EMAIL, DEMO_PASSWORD } from "@/lib/demo-constants";
 
 interface AuthState {
   ready: boolean;

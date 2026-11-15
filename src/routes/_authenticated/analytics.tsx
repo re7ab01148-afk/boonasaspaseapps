@@ -29,7 +29,7 @@ import { cn } from "@/lib/utils";
 
 const title = "Analytics · BOO Astronaut Health";
 const description = "Explore astronaut health trends, healthy ranges and period summaries.";
-export const Route = createFileRoute("/analytics")({
+export const Route = createFileRoute("/_authenticated/analytics")({
   head: () => ({
     meta: [
       { title },

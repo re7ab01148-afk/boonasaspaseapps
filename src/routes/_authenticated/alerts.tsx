@@ -10,7 +10,7 @@ import { fmtShortDate, fmtTime, getAstronaut, timeAgo, type AlertState } from "@
 import { STATUS_STYLE } from "@/lib/health/metrics";
 import { marsSteps } from "@/lib/health/mars";
 import { cn } from "@/lib/utils";
-export const Route = createFileRoute("/alerts")({
+export const Route = createFileRoute("/_authenticated/alerts")({
   head: () => ({
     meta: [
       { title: "Alerts · BOO Astronaut Health" },

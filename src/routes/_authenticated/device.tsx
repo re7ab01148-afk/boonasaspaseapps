@@ -23,7 +23,7 @@ import { Switch } from "@/components/ui/switch";
 import { PageHeader, Ring, SectionHead, Surface } from "@/components/boo/ui";
 import { DEVICE, timeAgo } from "@/lib/health/data";
 import { cn } from "@/lib/utils";
-export const Route = createFileRoute("/device")({
+export const Route = createFileRoute("/_authenticated/device")({
   head: () => ({
     meta: [
       { title: "Device · BOO Astronaut Health" },

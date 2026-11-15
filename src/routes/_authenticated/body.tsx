@@ -33,7 +33,7 @@ type BodyArea = {
   actions: string[];
   indicators: (sample: DayRecord) => Indicator[];
 };
-export const Route = createFileRoute("/body")({
+export const Route = createFileRoute("/_authenticated/body")({
   head: () => ({
     meta: [
       { title: "Body Map · BOO Astronaut Health" },
