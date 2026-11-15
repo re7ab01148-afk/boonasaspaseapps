@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus } from "lucide-react";
+import { Loader2, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -7,8 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { METRICS, STATUS_STYLE, recommend, statusOf, type MetricKey } from "@/lib/health/metrics";
-import { StatusPill } from "./ui";
+import { METRICS, STATUS_STYLE, isManualMetric, recommend, statusOf, type MetricKey } from "@/lib/health/metrics";
+import { ManualTag, StatusPill } from "./ui";
 
 const LOGGABLE: MetricKey[] = ["hr", "temp", "spo2", "sys", "dia", "glucose", "sleep", "mood", "iop", "hydration"];
 
@@ -17,8 +17,9 @@ export interface LoggedReading {
   value: number;
 }
 
-export function LogReadingDialog({ onSave }: { onSave: (r: LoggedReading) => void }) {
+export function LogReadingDialog({ onSave }: { onSave: (r: LoggedReading) => Promise<void> }) {
   const [open, setOpen] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [metric, setMetric] = useState<MetricKey>("glucose");
   const [raw, setRaw] = useState("");
   const value = Number(raw);
@@ -70,6 +71,7 @@ export function LogReadingDialog({ onSave }: { onSave: (r: LoggedReading) => voi
             <p className="text-xs text-muted-foreground">
               Healthy range: {m.normal[0]}–{m.normal[1]} {m.unit}
             </p>
+            {isManualMetric(metric) && <ManualTag className="w-fit" />}
           </div>
           {status && (
             <div className={cn("rounded-2xl border p-4", STATUS_STYLE[status].pill)}>
@@ -80,15 +82,22 @@ export function LogReadingDialog({ onSave }: { onSave: (r: LoggedReading) => voi
           <Button
             variant={status === "critical" ? "alert" : "glow"}
             size="xl"
-            disabled={!valid}
-            onClick={() => {
-              onSave({ metric, value });
-              toast.success(`${m.label} saved`, { description: `${value} ${m.unit} · ${status ? status.toUpperCase() : ""}` });
-              setRaw("");
-              setOpen(false);
+            disabled={!valid || saving}
+            onClick={async () => {
+              setSaving(true);
+              try {
+                await onSave({ metric, value });
+                toast.success(`${m.label} saved`, { description: `${value} ${m.unit} · ${status ? status.toUpperCase() : ""}` });
+                setRaw("");
+                setOpen(false);
+              } catch (err) {
+                toast.error("Couldn't save reading", { description: err instanceof Error ? err.message : "Please try again." });
+              } finally {
+                setSaving(false);
+              }
             }}
           >
-            Save reading
+            {saving && <Loader2 className="animate-spin" />} Save reading
           </Button>
         </div>
       </DialogContent>

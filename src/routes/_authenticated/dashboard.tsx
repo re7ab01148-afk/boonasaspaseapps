@@ -50,7 +50,10 @@ import { METRIC_ICON } from "@/components/boo/metric-icons";
 import { IssTracker } from "@/components/boo/IssTracker";
 import { EmergencySimulator } from "@/components/boo/EmergencySimulator";
 import { MarsPanel } from "@/components/boo/MarsPanel";
-import { LogReadingDialog, type LoggedReading } from "@/components/boo/LogReadingDialog";
+import { LogReadingDialog } from "@/components/boo/LogReadingDialog";
+import { PersonalDashboard } from "@/components/boo/personal/PersonalDashboard";
+import { useAuth } from "@/lib/auth";
+import { useAddReading, useMyReadings } from "@/lib/readings";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
@@ -71,8 +74,13 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: Dashboard,
+  component: DashboardPage,
 });
+
+function DashboardPage() {
+  const { isDemo } = useAuth();
+  return isDemo ? <Dashboard /> : <PersonalDashboard />;
+}
 
 const CARD_METRICS: MetricKey[] = [
   "temp",
@@ -93,7 +101,9 @@ function Dashboard() {
   const samples = useMemo(() => todaySamples(a.id), [a.id]);
   const status = overallStatus(a.id);
   const env = ENVIRONMENTS[a.env];
-  const [logged, setLogged] = useState<LoggedReading[]>([]);
+  const myReadings = useMyReadings();
+  const addReading = useAddReading();
+  const logged = myReadings.data ?? [];
   const [taskOverrides, setTaskOverrides] = useState<Record<string, boolean>>({});
   const [exporting, setExporting] = useState(false);
 
@@ -102,7 +112,7 @@ function Dashboard() {
   const earnedToday = TASKS.filter((t) => isDone(t.id)).reduce((s, t) => s + t.xp, 0);
   const lvl = levelFromXp(a.xp + earnedToday);
   const myOpen = alerts.filter((x) => x.astronautId === a.id && x.state !== "resolved");
-  const crewOpen = alerts.filter((x) => x.state === "open");
+  const crewActive = alerts.filter((x) => x.state !== "resolved");
   const hrStatus = statusOf("hr", today.hr);
   const overall = status === "normal" ? (myOpen.length > 0 ? "watch" : "normal") : status;
 
@@ -174,7 +184,7 @@ function Dashboard() {
               is doing in {env.gravity.toLowerCase()}.
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-3">
-              <LogReadingDialog onSave={(r) => setLogged((l) => [r, ...l])} />
+              <LogReadingDialog onSave={(r) => addReading.mutateAsync(r)} />
               <EmergencySimulator size="default" />
               <Button variant="pill" onClick={exportPdf} disabled={exporting}>
                 {exporting ? <Loader2 className="animate-spin" /> : <FileDown />} Export PDF
@@ -390,7 +400,7 @@ function Dashboard() {
           <SectionHead
             icon={<ShieldCheck />}
             title="Crew alerts"
-            sub={`${crewOpen.length} open across the crew`}
+            sub={`${crewActive.length} active across the crew`}
             action={
               <Button asChild variant="link" size="sm">
                 <Link to="/alerts">See all</Link>
@@ -490,12 +500,12 @@ function Dashboard() {
 
       {logged.length > 0 && (
         <Surface>
-          <SectionHead title="Readings you logged this session" />
+          <SectionHead title="Readings you logged" sub="Saved to your account" />
           <div className="flex flex-wrap gap-3">
-            {logged.map((r, i) => {
+            {logged.slice(0, 24).map((r) => {
               const s = statusOf(r.metric, r.value);
               return (
-                <div key={i} className={cn("rounded-2xl border px-4 py-3", STATUS_STYLE[s].pill)}>
+                <div key={r.id} className={cn("rounded-2xl border px-4 py-3", STATUS_STYLE[s].pill)}>
                   <p className="text-xs font-semibold">{METRICS[r.metric].label}</p>
                   <p className="font-display text-lg font-bold text-foreground">
                     {r.value} {METRICS[r.metric].unit}
