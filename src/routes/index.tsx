@@ -269,7 +269,7 @@ function Dashboard() {
         </Surface>
       </section>
 
-      <section className="grid gap-6 lg:grid-cols-2">
+      <section className="grid gap-6 lg:grid-cols-2 2xl:grid-cols-4">
         <Surface>
           <SectionHead
             icon={<ShieldCheck />}
