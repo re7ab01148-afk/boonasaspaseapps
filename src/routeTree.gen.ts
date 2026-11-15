@@ -10,14 +10,28 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AlertsRouteImport } from './routes/alerts'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as BodyRouteImport } from './routes/body'
+import { Route as CrewRouteImport } from './routes/crew'
+import { Route as DeviceRouteImport } from './routes/device'
 import { Route as GuideRouteImport } from './routes/guide'
 import { Route as MissionsRouteImport } from './routes/missions'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AlertsRoute = AlertsRouteImport.update({
+  id: '/alerts',
+  path: '/alerts',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AnalyticsRoute = AnalyticsRouteImport.update({
@@ -28,6 +42,16 @@ const AnalyticsRoute = AnalyticsRouteImport.update({
 const BodyRoute = BodyRouteImport.update({
   id: '/body',
   path: '/body',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CrewRoute = CrewRouteImport.update({
+  id: '/crew',
+  path: '/crew',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DeviceRoute = DeviceRouteImport.update({
+  id: '/device',
+  path: '/device',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GuideRoute = GuideRouteImport.update({
@@ -43,38 +67,82 @@ const MissionsRoute = MissionsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/alerts': typeof AlertsRoute
   '/analytics': typeof AnalyticsRoute
   '/body': typeof BodyRoute
+  '/crew': typeof CrewRoute
+  '/device': typeof DeviceRoute
   '/guide': typeof GuideRoute
   '/missions': typeof MissionsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/alerts': typeof AlertsRoute
   '/analytics': typeof AnalyticsRoute
   '/body': typeof BodyRoute
+  '/crew': typeof CrewRoute
+  '/device': typeof DeviceRoute
   '/guide': typeof GuideRoute
   '/missions': typeof MissionsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/alerts': typeof AlertsRoute
   '/analytics': typeof AnalyticsRoute
   '/body': typeof BodyRoute
+  '/crew': typeof CrewRoute
+  '/device': typeof DeviceRoute
   '/guide': typeof GuideRoute
   '/missions': typeof MissionsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/analytics' | '/body' | '/guide' | '/missions'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/alerts'
+    | '/analytics'
+    | '/body'
+    | '/crew'
+    | '/device'
+    | '/guide'
+    | '/missions'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/analytics' | '/body' | '/guide' | '/missions'
-  id: '__root__' | '/' | '/analytics' | '/body' | '/guide' | '/missions'
+  to:
+    | '/'
+    | '/about'
+    | '/alerts'
+    | '/analytics'
+    | '/body'
+    | '/crew'
+    | '/device'
+    | '/guide'
+    | '/missions'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/alerts'
+    | '/analytics'
+    | '/body'
+    | '/crew'
+    | '/device'
+    | '/guide'
+    | '/missions'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  AlertsRoute: typeof AlertsRoute
   AnalyticsRoute: typeof AnalyticsRoute
   BodyRoute: typeof BodyRoute
+  CrewRoute: typeof CrewRoute
+  DeviceRoute: typeof DeviceRoute
   GuideRoute: typeof GuideRoute
   MissionsRoute: typeof MissionsRoute
 }
@@ -86,6 +154,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/alerts': {
+      id: '/alerts'
+      path: '/alerts'
+      fullPath: '/alerts'
+      preLoaderRoute: typeof AlertsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/analytics': {
@@ -100,6 +182,20 @@ declare module '@tanstack/react-router' {
       path: '/body'
       fullPath: '/body'
       preLoaderRoute: typeof BodyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/crew': {
+      id: '/crew'
+      path: '/crew'
+      fullPath: '/crew'
+      preLoaderRoute: typeof CrewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/device': {
+      id: '/device'
+      path: '/device'
+      fullPath: '/device'
+      preLoaderRoute: typeof DeviceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/guide': {
@@ -121,8 +217,12 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  AlertsRoute: AlertsRoute,
   AnalyticsRoute: AnalyticsRoute,
   BodyRoute: BodyRoute,
+  CrewRoute: CrewRoute,
+  DeviceRoute: DeviceRoute,
   GuideRoute: GuideRoute,
   MissionsRoute: MissionsRoute,
 }
