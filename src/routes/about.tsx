@@ -3,7 +3,7 @@ import {
   BellRing,
   HeartPulse,
   Radio,
-  Watch,
+  HardHat,
   LayoutDashboard,
   Cloud,
   Users,
@@ -29,7 +29,7 @@ export const Route = createFileRoute("/about")({
 });
 const architecture = [
   {
-    icon: Watch,
+    icon: HardHat,
     title: "BOO smart helmet & manual logs",
     sub: "HR, SpO₂, temperature, BP, sleep, mood, water",
   },
