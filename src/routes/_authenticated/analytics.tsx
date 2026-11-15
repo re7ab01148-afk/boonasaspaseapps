@@ -143,6 +143,7 @@ function AnalyticsPage() {
                   <span className="text-xs text-muted-foreground">{m.unit}</span>
                 </span>
               </div>
+              {isManualMetric(key) && <ManualTag className="-mt-1 mb-2" />}
               <TrendChart data={data} metric={key} xKey="label" height={190} />
             </Surface>
           );
