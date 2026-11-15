@@ -99,7 +99,7 @@ var Ne = [
       call: `90 mmHg or higher twice in a row.`,
     },
     glucose: {
-      how: `Finger-stick meter before breakfast and 2 h after a meal.`,
+      how: `Manual now · Auto in next helmet version. Finger-stick meter before breakfast and 2 h after a meal, then log it with "Log a reading".`,
       why: `Spaceflight can reduce insulin sensitivity.`,
       call: `Above 180 or below 60 mg/dL.`,
     },
