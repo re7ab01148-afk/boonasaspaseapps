@@ -28,3 +28,12 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+<!-- AGENT-MEMORY:BEGIN -->
+## Project rules
+- BOO is a demo-crew astronaut health app; all readings come from the deterministic generator in `src/lib/health/data.ts` (fixed NOW) so SSR and client render identically — never use Date.now()/Math.random() during render.
+- Health ranges, status classification and advice live only in `src/lib/health/metrics.ts`; every page reads thresholds from there so screens never disagree.
+- Shared, user-changeable demo state (selected astronaut, Mars Mode, alert states) lives in `src/lib/app-state.tsx` and persists to localStorage after hydration.
+- The app shell (sidebar, header, footer) is rendered once in `src/routes/__root.tsx` via `AppShell`; pages render only their content.
+- Reusable page pieces live in `src/components/boo/`; page-only helpers go in `src/components/boo/<page>/`.
+<!-- AGENT-MEMORY:END -->

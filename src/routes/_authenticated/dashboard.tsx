@@ -1,0 +1,529 @@
+import { useMemo, useState } from "react";
+import { Link, createFileRoute } from "@tanstack/react-router";
+import {
+  ArrowRight,
+  CircleCheck,
+  Circle,
+  FileDown,
+  Flame,
+  Heart,
+  Loader2,
+  Orbit,
+  ShieldCheck,
+  Siren,
+  Sparkles,
+  Zap,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { cn } from "@/lib/utils";
+import heroImg from "@/assets/station-hero.jpg";
+import { useAppState } from "@/lib/app-state";
+import {
+  METRICS,
+  STATUS_LABEL,
+  STATUS_STYLE,
+  levelFromXp,
+  recommend,
+  statusOf,
+  type MetricKey,
+} from "@/lib/health/metrics";
+import {
+  ENVIRONMENTS,
+  historyOf,
+  NOW,
+  ROUTINE,
+  TASKS,
+  getAstronaut,
+  latest,
+  overallStatus,
+  previous,
+  taskDoneByDefault,
+  timeAgo,
+  todaySamples,
+} from "@/lib/health/data";
+import { downloadHealthReport } from "@/lib/pdf-report";
+import { AstronautAvatar, Ring, SectionHead, StatusPill, Surface } from "@/components/boo/ui";
+import { VitalCard } from "@/components/boo/VitalCard";
+import { TrendChart } from "@/components/boo/charts";
+import { METRIC_ICON } from "@/components/boo/metric-icons";
+import { IssTracker } from "@/components/boo/IssTracker";
+import { EmergencySimulator } from "@/components/boo/EmergencySimulator";
+import { MarsPanel } from "@/components/boo/MarsPanel";
+import { LogReadingDialog } from "@/components/boo/LogReadingDialog";
+import { PersonalDashboard } from "@/components/boo/personal/PersonalDashboard";
+import { useAuth } from "@/lib/auth";
+import { useAddReading, useMyReadings } from "@/lib/readings";
+
+export const Route = createFileRoute("/_authenticated/dashboard")({
+  head: () => ({
+    meta: [
+      { title: "Dashboard · BOO Astronaut Health" },
+      {
+        name: "description",
+        content:
+          "Live vitals, health missions, crew alerts and cabin readings for astronauts in orbit, on the Moon and on Mars.",
+      },
+      { property: "og:title", content: "Dashboard · BOO Astronaut Health" },
+      {
+        property: "og:description",
+        content:
+          "Live vitals, health missions, crew alerts and cabin readings for astronauts in space.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: DashboardPage,
+});
+
+function DashboardPage() {
+  const { isDemo } = useAuth();
+  return isDemo ? <Dashboard /> : <PersonalDashboard />;
+}
+
+const CARD_METRICS: MetricKey[] = [
+  "temp",
+  "spo2",
+  "sys",
+  "glucose",
+  "sleep",
+  "mood",
+  "iop",
+  "hydration",
+];
+
+function Dashboard() {
+  const { astronaut: a, marsMode, alerts } = useAppState();
+  const today = latest(a.id);
+  const yesterday = previous(a.id);
+  const last14 = historyOf(a.id).slice(-14);
+  const samples = useMemo(() => todaySamples(a.id), [a.id]);
+  const status = overallStatus(a.id);
+  const env = ENVIRONMENTS[a.env];
+  const myReadings = useMyReadings();
+  const addReading = useAddReading();
+  const logged = myReadings.data ?? [];
+  const [taskOverrides, setTaskOverrides] = useState<Record<string, boolean>>({});
+  const [exporting, setExporting] = useState(false);
+
+  const isDone = (taskId: string) =>
+    taskOverrides[`${a.id}:${taskId}`] ?? taskDoneByDefault(a.id, taskId);
+  const earnedToday = TASKS.filter((t) => isDone(t.id)).reduce((s, t) => s + t.xp, 0);
+  const lvl = levelFromXp(a.xp + earnedToday);
+  const myOpen = alerts.filter((x) => x.astronautId === a.id && x.state !== "resolved");
+  const crewActive = alerts.filter((x) => x.state !== "resolved");
+  const hrStatus = statusOf("hr", today.hr);
+  const overall = status === "normal" ? (myOpen.length > 0 ? "watch" : "normal") : status;
+
+  async function exportPdf() {
+    setExporting(true);
+    try {
+      const keys: MetricKey[] = [
+        "hr",
+        "temp",
+        "spo2",
+        "sys",
+        "dia",
+        "glucose",
+        "sleep",
+        "mood",
+        "iop",
+        "hydration",
+        "radiation",
+      ];
+      await downloadHealthReport({
+        title: "Crew health report (demo data)",
+        person: `${a.name} · ${a.role}`,
+        subtitle: `${a.missionName} · day ${a.missionDay} of ${a.missionLength} · ${env.name}`,
+        vitals: keys.map((k) => ({
+          label: METRICS[k].label,
+          value: `${today[k]} ${METRICS[k].unit}`,
+          status: STATUS_LABEL[statusOf(k, today[k])],
+        })),
+        alerts: alerts
+          .filter((x) => x.astronautId === a.id)
+          .slice(0, 20)
+          .map((x) => ({
+            when: timeAgo(x.ts),
+            severity: x.severity === "critical" ? "Critical" : "Warning",
+            title: x.title,
+            value: x.value,
+            action: x.action || recommend(x.metric, x.severity),
+            status: x.state,
+          })),
+        note: "Simulated data based on NASA reference ranges. Generated by BOO for demonstration only; not a medical diagnosis.",
+      });
+    } finally {
+      setExporting(false);
+    }
+  }
+
+  return (
+    <div className="space-y-6">
+      <section className="relative overflow-hidden rounded-[2rem] bg-card shadow-card ring-1 ring-border">
+        <img
+          src={heroImg}
+          alt="Astronaut inside the space station"
+          width={1600}
+          height={912}
+          className="absolute inset-0 h-full w-full object-cover object-[85%_30%]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-card via-card/75 to-transparent" />
+        <div className="relative grid gap-6 p-6 md:p-10 lg:grid-cols-[1.3fr_1fr]">
+          <div className="animate-rise">
+            <span className="inline-flex items-center gap-2 rounded-full bg-accent px-3 py-1 text-xs font-bold text-accent-foreground">
+              <Orbit className="size-3.5" /> {env.name} · {env.location}
+            </span>
+            <h1 className="mt-4 text-3xl font-extrabold text-foreground md:text-5xl">
+              Good afternoon, <span className="text-gradient-primary">{a.name.split(" ")[0]}</span>
+            </h1>
+            <p className="mt-3 max-w-lg text-muted-foreground">
+              Mission day {a.missionDay} of {a.missionLength}. Your helmet took{" "}
+              {(samples.length * 3).toLocaleString("en-US")} readings today. Here is how your body
+              is doing in {env.gravity.toLowerCase()}.
+            </p>
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <LogReadingDialog onSave={(r) => addReading.mutateAsync(r)} />
+              <EmergencySimulator size="default" />
+              <Button variant="pill" onClick={exportPdf} disabled={exporting}>
+                {exporting ? <Loader2 className="animate-spin" /> : <FileDown />} Export PDF
+              </Button>
+              <Button asChild variant="pill">
+                <Link to="/body">
+                  Open body map <ArrowRight />
+                </Link>
+              </Button>
+            </div>
+          </div>
+          <div className="flex items-end lg:justify-end">
+            <div
+              className={cn(
+                "w-full max-w-sm rounded-3xl border bg-card/90 p-5 backdrop-blur-md",
+                overall === "critical"
+                  ? "border-destructive/30"
+                  : overall === "watch"
+                    ? "border-warning/40"
+                    : "border-success/30",
+              )}
+            >
+              <div className="flex items-center gap-3">
+                <span
+                  className={cn(
+                    "inline-flex size-11 items-center justify-center rounded-2xl",
+                    STATUS_STYLE[overall].soft,
+                  )}
+                >
+                  {overall === "normal" ? (
+                    <ShieldCheck className="size-6 text-success" />
+                  ) : (
+                    <Siren className={cn("size-6", STATUS_STYLE[overall].text)} />
+                  )}
+                </span>
+                <div>
+                  <p className="font-display text-lg font-bold text-foreground">
+                    {overall === "normal"
+                      ? "All systems normal"
+                      : overall === "watch"
+                        ? "Some indicators need attention"
+                        : "Abnormal vital detected"}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {overall === "normal"
+                      ? "You're safe. Keep it up!"
+                      : `${myOpen.length} open alert${myOpen.length === 1 ? "" : "s"}`}
+                  </p>
+                </div>
+              </div>
+              {overall !== "normal" && (
+                <Button
+                  asChild
+                  variant={overall === "critical" ? "alert" : "soft"}
+                  className="mt-4 w-full"
+                >
+                  <Link to="/alerts">Review & take action</Link>
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {marsMode && (
+        <MarsPanel
+          alerts={myOpen.map((x) => ({
+            id: x.id,
+            metric: x.metric,
+            severity: x.severity,
+            title: x.title,
+            recommendation: x.action,
+          }))}
+        />
+      )}
+
+      <section className="grid gap-6 xl:grid-cols-[380px_1fr]">
+        <Surface className="flex flex-col items-center bg-gradient-sky">
+          <div className="flex w-full items-center justify-between">
+            <h3 className="font-semibold text-foreground">Heart rate</h3>
+            <StatusPill status={hrStatus} />
+          </div>
+          <div className="relative my-4">
+            <span className="absolute inset-6 animate-pulse-ring rounded-full bg-primary/10" />
+            <Ring
+              value={today.hr}
+              max={140}
+              size={230}
+              stroke={16}
+              status={hrStatus === "normal" ? undefined : hrStatus}
+            >
+              <Heart
+                className={cn(
+                  "size-8 animate-heartbeat fill-current",
+                  hrStatus === "normal" ? "text-destructive" : STATUS_STYLE[hrStatus].text,
+                )}
+              />
+              <span className="font-display text-6xl font-extrabold text-foreground tabular">
+                {today.hr}
+              </span>
+              <span className="font-display text-lg font-semibold text-muted-foreground">bpm</span>
+            </Ring>
+          </div>
+          <div className="grid w-full grid-cols-3 gap-2 text-center">
+            {[
+              ["Resting", `${today.hr}`],
+              ["Peak", `${today.hrMax}`],
+              ["HRV", `${today.hrv} ms`],
+            ].map(([k, v]) => (
+              <div key={k} className="rounded-2xl bg-card p-3 ring-1 ring-border">
+                <p className="text-[11px] font-semibold text-muted-foreground uppercase">{k}</p>
+                <p className="font-display text-lg font-bold text-foreground">{v}</p>
+              </div>
+            ))}
+          </div>
+        </Surface>
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          {CARD_METRICS.map((k) => (
+            <VitalCard
+              key={k}
+              metric={k}
+              value={today[k]}
+              prev={yesterday[k]}
+              history={last14.map((d) => d[k])}
+              display={k === "sys" ? `${today.sys}/${today.dia}` : undefined}
+              goal={k === "hydration" ? 3 : undefined}
+            />
+          ))}
+        </div>
+      </section>
+
+      <section className="grid gap-6 xl:grid-cols-[1fr_400px]">
+        <Surface>
+          <SectionHead
+            icon={<Zap />}
+            title="Today · heart rate & oxygen"
+            sub="5-minute samples from your BOO helmet since 00:00 mission time"
+            action={
+              <Button asChild variant="soft" size="sm">
+                <Link to="/analytics">Full analytics</Link>
+              </Button>
+            }
+          />
+          <TrendChart data={samples} metric="hr" xKey="time" height={240} />
+          <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {[
+              ["Exercise", `${today.exercise} min`],
+              ["Deep sleep", `${today.deepSleep} h`],
+              ["Stress", `${today.stress}/100`],
+              ["Mission dose", `${today.radiationTotal} mSv`],
+            ].map(([k, v]) => (
+              <div key={k} className="rounded-2xl bg-muted p-3">
+                <p className="text-xs font-semibold text-muted-foreground">{k}</p>
+                <p className="font-display text-lg font-bold text-foreground">{v}</p>
+              </div>
+            ))}
+          </div>
+        </Surface>
+        <Surface>
+          <SectionHead
+            icon={<Flame />}
+            title="Today's health missions"
+            sub={`Level ${lvl.level} · ${a.streak}-day streak`}
+            action={
+              <span className="rounded-full bg-accent px-2.5 py-1 text-xs font-bold text-accent-foreground">
+                +{earnedToday} XP
+              </span>
+            }
+          />
+          <Progress value={lvl.pct} className="mb-4 h-2" />
+          <ul className="space-y-1.5">
+            {TASKS.map((t) => {
+              const done = isDone(t.id);
+              return (
+                <li key={t.id}>
+                  <button
+                    type="button"
+                    onClick={() => setTaskOverrides((o) => ({ ...o, [`${a.id}:${t.id}`]: !done }))}
+                    className={cn(
+                      "flex w-full items-center gap-3 rounded-xl px-2.5 py-2 text-left transition-colors hover:bg-muted",
+                      done && "opacity-70",
+                    )}
+                  >
+                    {done ? (
+                      <CircleCheck className="size-5 shrink-0 text-success" />
+                    ) : (
+                      <Circle className="size-5 shrink-0 text-muted-foreground" />
+                    )}
+                    <span className="flex-1">
+                      <span
+                        className={cn(
+                          "block text-sm font-semibold text-foreground",
+                          done && "line-through",
+                        )}
+                      >
+                        {t.title}
+                      </span>
+                      <span className="block text-xs text-muted-foreground">
+                        {t.time} · {t.duration}
+                      </span>
+                    </span>
+                    <span className="text-xs font-bold text-primary">+{t.xp}</span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </Surface>
+      </section>
+
+      <section className="grid gap-6 lg:grid-cols-2 2xl:grid-cols-4">
+        <Surface>
+          <SectionHead
+            icon={<ShieldCheck />}
+            title="Crew alerts"
+            sub={`${crewActive.length} active across the crew`}
+            action={
+              <Button asChild variant="link" size="sm">
+                <Link to="/alerts">See all</Link>
+              </Button>
+            }
+          />
+          <ul className="space-y-3">
+            {alerts
+              .filter((x) => x.state !== "resolved")
+              .slice(0, 5)
+              .map((x) => {
+                const who = getAstronaut(x.astronautId);
+                const Icon = METRIC_ICON[x.metric];
+                return (
+                  <li key={x.id} className="flex items-center gap-3">
+                    <span
+                      className={cn(
+                        "inline-flex size-10 shrink-0 items-center justify-center rounded-xl",
+                        STATUS_STYLE[x.severity].soft,
+                      )}
+                    >
+                      <Icon className={cn("size-[18px]", STATUS_STYLE[x.severity].text)} />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-semibold text-foreground">{x.title}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {who.name} · {timeAgo(x.ts)}
+                      </p>
+                    </div>
+                    <span
+                      className={cn("text-sm font-bold tabular", STATUS_STYLE[x.severity].text)}
+                    >
+                      {x.value}
+                    </span>
+                  </li>
+                );
+              })}
+          </ul>
+        </Surface>
+        <Surface>
+          <SectionHead icon={<Orbit />} title={`${env.short} cabin`} sub={env.location} />
+          <div className="grid grid-cols-2 gap-3">
+            {(
+              [
+                ["CO₂", `${env.cabin.co2} mmHg`, env.cabin.co2 > 4 ? "watch" : "normal"],
+                ["O₂", `${env.cabin.o2} %`, "normal"],
+                ["Pressure", `${env.cabin.pressure} kPa`, "normal"],
+                ["Cabin temp", `${env.cabin.temp} °C`, "normal"],
+                ["Humidity", `${env.cabin.humidity} %`, "normal"],
+                ["Radiation", `${today.radiation} mSv/d`, statusOf("radiation", today.radiation)],
+              ] as const
+            ).map(([k, v, s]) => (
+              <div key={k} className="rounded-2xl bg-muted p-3">
+                <div className="flex items-center justify-between">
+                  <p className="text-xs font-semibold text-muted-foreground">{k}</p>
+                  <span className={cn("size-2 rounded-full", STATUS_STYLE[s].dot)} />
+                </div>
+                <p className="font-display text-base font-bold text-foreground">{v}</p>
+              </div>
+            ))}
+          </div>
+          <p className="mt-3 text-xs text-muted-foreground">
+            Gravity: {env.gravity} · Signal delay to Earth: {env.commDelay}
+          </p>
+        </Surface>
+        <Surface>
+          <SectionHead icon={<Sparkles />} title="Today's routine" sub="Mission timeline (MT)" />
+          <ol className="relative ml-1 space-y-3 border-l border-border pl-5">
+            {ROUTINE.map((r) => {
+              const [h = 0, m = 0] = r.time.split(":").map(Number);
+              const past =
+                h + m / 60 < new Date(NOW).getUTCHours() + new Date(NOW).getUTCMinutes() / 60;
+              return (
+                <li key={r.time} className="relative">
+                  <span
+                    className={cn(
+                      "absolute top-1.5 -left-[25px] size-2.5 rounded-full ring-4 ring-card",
+                      past ? "bg-muted-foreground/40" : "bg-primary",
+                    )}
+                  />
+                  <p
+                    className={cn(
+                      "text-sm font-semibold",
+                      past ? "text-muted-foreground" : "text-foreground",
+                    )}
+                  >
+                    <span className="mr-2 font-display tabular">{r.time}</span>
+                    {r.title}
+                  </p>
+                </li>
+              );
+            })}
+          </ol>
+        </Surface>
+        <IssTracker />
+      </section>
+
+      {logged.length > 0 && (
+        <Surface>
+          <SectionHead title="Readings you logged" sub="Saved to your account" />
+          <div className="flex flex-wrap gap-3">
+            {logged.slice(0, 24).map((r) => {
+              const s = statusOf(r.metric, r.value);
+              return (
+                <div
+                  key={r.id}
+                  className={cn("rounded-2xl border px-4 py-3", STATUS_STYLE[s].pill)}
+                >
+                  <p className="text-xs font-semibold">{METRICS[r.metric].label}</p>
+                  <p className="font-display text-lg font-bold text-foreground">
+                    {r.value} {METRICS[r.metric].unit}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </Surface>
+      )}
+
+      <p className="flex items-center gap-2 text-xs text-muted-foreground">
+        <AstronautAvatar a={a} size="sm" /> Viewing {a.name}. Switch astronaut from the top bar to
+        compare crew health.
+      </p>
+    </div>
+  );
+}
