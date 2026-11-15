@@ -136,7 +136,7 @@ function AnalyticsPage() {
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         {cards.map((key) => {
           const m = METRICS[key],
-            value = data[data.length - 1][key],
+            value = data[data.length - 1]?.[key] ?? 0,
             Icon = METRIC_ICON[key];
           return (
             <Surface key={key}>

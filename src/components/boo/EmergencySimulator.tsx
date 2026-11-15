@@ -61,7 +61,7 @@ export function EmergencySimulator({ size = "xl" }: { size?: "xl" | "default" })
   }, [open]);
 
   const series = Array.from({ length: step + 1 }, (_, i) => sample(i));
-  const cur = series[series.length - 1];
+  const cur = series[series.length - 1] ?? sample(0);
   const hrS = statusOf("hr", cur.hr);
   const spS = statusOf("spo2", cur.spo2);
   const showAlert = step >= CRITICAL_AT;
