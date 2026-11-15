@@ -10,6 +10,8 @@ import { fmtShortDate, fmtTime, getAstronaut, timeAgo, type AlertState } from "@
 import { STATUS_STYLE } from "@/lib/health/metrics";
 import { marsSteps } from "@/lib/health/mars";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/lib/auth";
+import { PersonalAlerts } from "@/components/boo/personal/PersonalAlerts";
 export const Route = createFileRoute("/_authenticated/alerts")({
   head: () => ({
     meta: [
@@ -21,8 +23,12 @@ export const Route = createFileRoute("/_authenticated/alerts")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: Alerts,
+  component: AlertsPage,
 });
+function AlertsPage() {
+  const { isDemo } = useAuth();
+  return isDemo ? <Alerts /> : <PersonalAlerts />;
+}
 function Alerts() {
   const { alerts, setAlertState, marsMode } = useAppState();
   const [filter, setFilter] = useState<AlertState | "all">("all");
@@ -34,7 +40,7 @@ function Alerts() {
       <PageHeader
         eyebrow="Alerts"
         title="Health alerts"
-        description={`${alerts.filter((a) => a.state === "open").length} open · ${alerts.filter((a) => a.state === "acknowledged").length} in progress · ${alerts.filter((a) => a.state === "resolved").length} resolved in the last 90 days.`}
+        description={`${alerts.filter((a) => a.state !== "resolved").length} need attention: ${alerts.filter((a) => a.state === "open").length} open · ${alerts.filter((a) => a.state === "acknowledged").length} in progress · ${alerts.filter((a) => a.state === "resolved").length} resolved in the last 90 days.`}
       />
       {featured && (
         <section className="grid overflow-hidden rounded-[2rem] bg-card shadow-danger ring-1 ring-destructive/20 lg:grid-cols-[1fr_1.2fr]">
