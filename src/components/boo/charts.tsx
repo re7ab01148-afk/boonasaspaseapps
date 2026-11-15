@@ -28,7 +28,7 @@ export function Sparkline({
 }: {
   data: number[];
   color: string;
-  height?: number;
+  height?: number | undefined;
 }) {
   const rows = data.map((v, i) => ({ i, v }));
   return (
@@ -64,10 +64,10 @@ export function TrendChart<T extends object>({
   data: T[];
   metric: MetricKey;
   xKey: keyof T & string;
-  height?: number;
-  color?: string;
-  showBand?: boolean;
-  domain?: [number, number];
+  height?: number | undefined;
+  color?: string | undefined;
+  showBand?: boolean | undefined;
+  domain?: [number, number] | undefined;
 }) {
   const m = METRICS[metric];
   const stroke = color ?? `var(--${m.chart})`;

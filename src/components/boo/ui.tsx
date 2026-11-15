@@ -27,8 +27,8 @@ export function StatusPill({
   className,
 }: {
   status: Status;
-  label?: string;
-  className?: string;
+  label?: string | undefined;
+  className?: string | undefined;
 }) {
   const s = STATUS_STYLE[status];
   return (
@@ -51,8 +51,8 @@ export function AstronautAvatar({
   ring,
 }: {
   a: Astronaut;
-  size?: "sm" | "md" | "lg";
-  ring?: Status;
+  size?: "sm" | "md" | "lg" | undefined;
+  ring?: Status | undefined;
 }) {
   const dims =
     size === "sm" ? "size-8 text-xs" : size === "lg" ? "size-16 text-xl" : "size-11 text-sm";
@@ -85,10 +85,10 @@ export function PageHeader({
   description,
   actions,
 }: {
-  eyebrow?: string;
+  eyebrow?: string | undefined;
   title: ReactNode;
-  description?: ReactNode;
-  actions?: ReactNode;
+  description?: ReactNode | undefined;
+  actions?: ReactNode | undefined;
 }) {
   return (
     <div className="flex flex-col gap-4 pb-6 md:flex-row md:items-end md:justify-between">
@@ -108,7 +108,7 @@ export function PageHeader({
   );
 }
 
-export function Surface({ className, children }: { className?: string; children: ReactNode }) {
+export function Surface({ className, children }: { className?: string | undefined; children: ReactNode }) {
   return <div className={cn("surface p-5", className)}>{children}</div>;
 }
 
@@ -118,10 +118,10 @@ export function SectionHead({
   action,
   sub,
 }: {
-  icon?: ReactNode;
+  icon?: ReactNode | undefined;
   title: ReactNode;
-  action?: ReactNode;
-  sub?: ReactNode;
+  action?: ReactNode | undefined;
+  sub?: ReactNode | undefined;
 }) {
   return (
     <div className="mb-4 flex items-start justify-between gap-3">
@@ -151,12 +151,12 @@ export function Ring({
   className,
 }: {
   value: number;
-  max?: number;
-  size?: number;
-  stroke?: number;
-  status?: Status;
-  children?: ReactNode;
-  className?: string;
+  max?: number | undefined;
+  size?: number | undefined;
+  stroke?: number | undefined;
+  status?: Status | undefined;
+  children?: ReactNode | undefined;
+  className?: string | undefined;
 }) {
   const r = (size - stroke) / 2;
   const c = 2 * Math.PI * r;
@@ -204,8 +204,8 @@ export function Delta({
 }: {
   now: number;
   prev: number;
-  unit?: string;
-  metric?: MetricKey;
+  unit?: string | undefined;
+  metric?: MetricKey | undefined;
 }) {
   const decimals = metric ? METRICS[metric].decimals : 1;
   const p = 10 ** Math.max(1, decimals);
@@ -235,7 +235,7 @@ export function Delta({
 }
 
 /** Small tag for readings the helmet doesn't measure automatically yet. */
-export function ManualTag({ className }: { className?: string }) {
+export function ManualTag({ className }: { className?: string | undefined }) {
   return (
     <span
       className={cn(

@@ -25,10 +25,10 @@ export function VitalCard({
   value: number;
   prev: number;
   history: number[];
-  display?: string;
-  onClick?: () => void;
-  compareLabel?: string;
-  goal?: number;
+  display?: string | undefined;
+  onClick?: (() => void) | undefined;
+  compareLabel?: string | undefined;
+  goal?: number | undefined;
 }) {
   const m = METRICS[metric];
   const status = statusOf(metric, value);
