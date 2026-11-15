@@ -1,3 +1,4 @@
+import { DemoOnly } from "@/components/boo/DemoOnly";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -25,7 +26,7 @@ export const Route = createFileRoute("/_authenticated/crew")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: Crew,
+  component: CrewGate,
 });
 function Crew() {
   const { alerts, setAstronautId } = useAppState();
@@ -160,5 +161,13 @@ function Crew() {
         </div>
       </section>
     </div>
+  );
+}
+
+function CrewGate() {
+  return (
+    <DemoOnly>
+      <Crew />
+    </DemoOnly>
   );
 }

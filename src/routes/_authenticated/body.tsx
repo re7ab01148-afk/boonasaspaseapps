@@ -1,3 +1,4 @@
+import { DemoOnly } from "@/components/boo/DemoOnly";
 import * as x from "react";
 import type { KeyboardEvent } from "react";
 import { jsx, jsxs } from "react/jsx-runtime";
@@ -50,7 +51,7 @@ export const Route = createFileRoute("/_authenticated/body")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: D,
+  component: DGate,
 });
 const S = (e: MetricKey, t: DayRecord): Indicator => ({
     label: a[e].label,
@@ -614,4 +615,12 @@ function D() {
       }),
     ],
   });
+}
+
+function DGate() {
+  return (
+    <DemoOnly>
+      <D />
+    </DemoOnly>
+  );
 }

@@ -1,3 +1,4 @@
+import { DemoOnly } from "@/components/boo/DemoOnly";
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
@@ -38,7 +39,7 @@ export const Route = createFileRoute("/_authenticated/missions")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: MissionsPage,
+  component: MissionsPageGate,
 });
 const icons = {
   flame: Flame,
@@ -268,5 +269,13 @@ function MissionsPage() {
         </div>
       </Surface>
     </div>
+  );
+}
+
+function MissionsPageGate() {
+  return (
+    <DemoOnly>
+      <MissionsPage />
+    </DemoOnly>
   );
 }

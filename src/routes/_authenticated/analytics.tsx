@@ -1,3 +1,4 @@
+import { DemoOnly } from "@/components/boo/DemoOnly";
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { CalendarDays, Download } from "lucide-react";
@@ -40,7 +41,7 @@ export const Route = createFileRoute("/_authenticated/analytics")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: AnalyticsPage,
+  component: AnalyticsPageGate,
 });
 const ranges = [
   { id: "1W", days: 7 },
@@ -354,5 +355,13 @@ function AnalyticsPage() {
         </div>
       </Surface>
     </div>
+  );
+}
+
+function AnalyticsPageGate() {
+  return (
+    <DemoOnly>
+      <AnalyticsPage />
+    </DemoOnly>
   );
 }
