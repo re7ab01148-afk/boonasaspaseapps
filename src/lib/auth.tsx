@@ -40,7 +40,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo<AuthState>(() => {
     const user = session?.user ?? null;
-    const isDemo = user?.app_metadata?.demo === true;
+    const isDemo = user?.app_metadata?.["demo"] === true;
     const meta = user?.user_metadata as { display_name?: string } | undefined;
     return {
       ready,

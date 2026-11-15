@@ -12,12 +12,10 @@ import { DEMO_EMAIL, DEMO_PASSWORD } from "@/lib/demo-constants";
 import { ensureDemoAccount } from "@/lib/demo-account.functions";
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (s: Record<string, unknown>) => ({
-    redirect:
-      typeof s.redirect === "string" && s.redirect.startsWith("/") && !s.redirect.startsWith("//")
-        ? s.redirect
-        : undefined,
-  }),
+  validateSearch: (s: Record<string, unknown>): { redirect?: string } => {
+    const r = s["redirect"];
+    return typeof r === "string" && r.startsWith("/") && !r.startsWith("//") ? { redirect: r } : {};
+  },
   head: () => ({
     meta: [
       { title: "Sign in · BOO Astronaut Health" },
@@ -55,7 +53,10 @@ function AuthPage() {
       password: String(f.get("password")),
     });
     setBusy(null);
-    if (error) return toast.error("Couldn't sign in", { description: error.message });
+    if (error) {
+      toast.error("Couldn't sign in", { description: error.message });
+      return;
+    }
     go();
   }
 
@@ -73,7 +74,10 @@ function AuthPage() {
       },
     });
     setBusy(null);
-    if (error) return toast.error("Couldn't create account", { description: error.message });
+    if (error) {
+      toast.error("Couldn't create account", { description: error.message });
+      return;
+    }
     if (data.session) return go();
     setSentTo(email);
   }
