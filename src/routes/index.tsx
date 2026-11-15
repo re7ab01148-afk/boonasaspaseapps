@@ -1,12 +1,33 @@
 import { useMemo, useState } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, CircleCheck, Circle, FileDown, Flame, Heart, Loader2, Orbit, ShieldCheck, Siren, Sparkles, Zap } from "lucide-react";
+import {
+  ArrowRight,
+  CircleCheck,
+  Circle,
+  FileDown,
+  Flame,
+  Heart,
+  Loader2,
+  Orbit,
+  ShieldCheck,
+  Siren,
+  Sparkles,
+  Zap,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import heroImg from "@/assets/station-hero.jpg";
 import { useAppState } from "@/lib/app-state";
-import { METRICS, STATUS_LABEL, STATUS_STYLE, levelFromXp, recommend, statusOf, type MetricKey } from "@/lib/health/metrics";
+import {
+  METRICS,
+  STATUS_LABEL,
+  STATUS_STYLE,
+  levelFromXp,
+  recommend,
+  statusOf,
+  type MetricKey,
+} from "@/lib/health/metrics";
 import {
   ENVIRONMENTS,
   HISTORY,
@@ -35,9 +56,17 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Dashboard · BOO Astronaut Health" },
-      { name: "description", content: "Live vitals, health missions, crew alerts and cabin readings for astronauts in orbit, on the Moon and on Mars." },
+      {
+        name: "description",
+        content:
+          "Live vitals, health missions, crew alerts and cabin readings for astronauts in orbit, on the Moon and on Mars.",
+      },
       { property: "og:title", content: "Dashboard · BOO Astronaut Health" },
-      { property: "og:description", content: "Live vitals, health missions, crew alerts and cabin readings for astronauts in space." },
+      {
+        property: "og:description",
+        content:
+          "Live vitals, health missions, crew alerts and cabin readings for astronauts in space.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -45,7 +74,16 @@ export const Route = createFileRoute("/")({
   component: Dashboard,
 });
 
-const CARD_METRICS: MetricKey[] = ["temp", "spo2", "sys", "glucose", "sleep", "mood", "iop", "hydration"];
+const CARD_METRICS: MetricKey[] = [
+  "temp",
+  "spo2",
+  "sys",
+  "glucose",
+  "sleep",
+  "mood",
+  "iop",
+  "hydration",
+];
 
 function Dashboard() {
   const { astronaut: a, marsMode, alerts } = useAppState();
@@ -59,7 +97,8 @@ function Dashboard() {
   const [taskOverrides, setTaskOverrides] = useState<Record<string, boolean>>({});
   const [exporting, setExporting] = useState(false);
 
-  const isDone = (taskId: string) => taskOverrides[`${a.id}:${taskId}`] ?? taskDoneByDefault(a.id, taskId);
+  const isDone = (taskId: string) =>
+    taskOverrides[`${a.id}:${taskId}`] ?? taskDoneByDefault(a.id, taskId);
   const earnedToday = TASKS.filter((t) => isDone(t.id)).reduce((s, t) => s + t.xp, 0);
   const lvl = levelFromXp(a.xp + earnedToday);
   const myOpen = alerts.filter((x) => x.astronautId === a.id && x.state !== "resolved");
@@ -70,12 +109,28 @@ function Dashboard() {
   async function exportPdf() {
     setExporting(true);
     try {
-      const keys: MetricKey[] = ["hr", "temp", "spo2", "sys", "dia", "glucose", "sleep", "mood", "iop", "hydration", "radiation"];
+      const keys: MetricKey[] = [
+        "hr",
+        "temp",
+        "spo2",
+        "sys",
+        "dia",
+        "glucose",
+        "sleep",
+        "mood",
+        "iop",
+        "hydration",
+        "radiation",
+      ];
       await downloadHealthReport({
         title: "Crew health report (demo data)",
         person: `${a.name} · ${a.role}`,
         subtitle: `${a.missionName} · day ${a.missionDay} of ${a.missionLength} · ${env.name}`,
-        vitals: keys.map((k) => ({ label: METRICS[k].label, value: `${today[k]} ${METRICS[k].unit}`, status: STATUS_LABEL[statusOf(k, today[k])] })),
+        vitals: keys.map((k) => ({
+          label: METRICS[k].label,
+          value: `${today[k]} ${METRICS[k].unit}`,
+          status: STATUS_LABEL[statusOf(k, today[k])],
+        })),
         alerts: alerts
           .filter((x) => x.astronautId === a.id)
           .slice(0, 20)
@@ -114,8 +169,9 @@ function Dashboard() {
               Good afternoon, <span className="text-gradient-primary">{a.name.split(" ")[0]}</span>
             </h1>
             <p className="mt-3 max-w-lg text-muted-foreground">
-              Mission day {a.missionDay} of {a.missionLength}. Your band took {(samples.length * 3).toLocaleString("en-US")} readings today. Here is how your
-              body is doing in {env.gravity.toLowerCase()}.
+              Mission day {a.missionDay} of {a.missionLength}. Your band took{" "}
+              {(samples.length * 3).toLocaleString("en-US")} readings today. Here is how your body
+              is doing in {env.gravity.toLowerCase()}.
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <LogReadingDialog onSave={(r) => setLogged((l) => [r, ...l])} />
@@ -134,24 +190,47 @@ function Dashboard() {
             <div
               className={cn(
                 "w-full max-w-sm rounded-3xl border bg-card/90 p-5 backdrop-blur-md",
-                overall === "critical" ? "border-destructive/30" : overall === "watch" ? "border-warning/40" : "border-success/30",
+                overall === "critical"
+                  ? "border-destructive/30"
+                  : overall === "watch"
+                    ? "border-warning/40"
+                    : "border-success/30",
               )}
             >
               <div className="flex items-center gap-3">
-                <span className={cn("inline-flex size-11 items-center justify-center rounded-2xl", STATUS_STYLE[overall].soft)}>
-                  {overall === "normal" ? <ShieldCheck className="size-6 text-success" /> : <Siren className={cn("size-6", STATUS_STYLE[overall].text)} />}
+                <span
+                  className={cn(
+                    "inline-flex size-11 items-center justify-center rounded-2xl",
+                    STATUS_STYLE[overall].soft,
+                  )}
+                >
+                  {overall === "normal" ? (
+                    <ShieldCheck className="size-6 text-success" />
+                  ) : (
+                    <Siren className={cn("size-6", STATUS_STYLE[overall].text)} />
+                  )}
                 </span>
                 <div>
                   <p className="font-display text-lg font-bold text-foreground">
-                    {overall === "normal" ? "All systems normal" : overall === "watch" ? "Some indicators need attention" : "Abnormal vital detected"}
+                    {overall === "normal"
+                      ? "All systems normal"
+                      : overall === "watch"
+                        ? "Some indicators need attention"
+                        : "Abnormal vital detected"}
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    {overall === "normal" ? "You're safe. Keep it up!" : `${myOpen.length} open alert${myOpen.length === 1 ? "" : "s"}`}
+                    {overall === "normal"
+                      ? "You're safe. Keep it up!"
+                      : `${myOpen.length} open alert${myOpen.length === 1 ? "" : "s"}`}
                   </p>
                 </div>
               </div>
               {overall !== "normal" && (
-                <Button asChild variant={overall === "critical" ? "alert" : "soft"} className="mt-4 w-full">
+                <Button
+                  asChild
+                  variant={overall === "critical" ? "alert" : "soft"}
+                  className="mt-4 w-full"
+                >
                   <Link to="/alerts">Review & take action</Link>
                 </Button>
               )}
@@ -162,7 +241,13 @@ function Dashboard() {
 
       {marsMode && (
         <MarsPanel
-          alerts={myOpen.map((x) => ({ id: x.id, metric: x.metric, severity: x.severity, title: x.title, recommendation: x.action }))}
+          alerts={myOpen.map((x) => ({
+            id: x.id,
+            metric: x.metric,
+            severity: x.severity,
+            title: x.title,
+            recommendation: x.action,
+          }))}
         />
       )}
 
@@ -174,9 +259,22 @@ function Dashboard() {
           </div>
           <div className="relative my-4">
             <span className="absolute inset-6 animate-pulse-ring rounded-full bg-primary/10" />
-            <Ring value={today.hr} max={140} size={230} stroke={16} status={hrStatus === "normal" ? undefined : hrStatus}>
-              <Heart className={cn("size-8 animate-heartbeat fill-current", hrStatus === "normal" ? "text-destructive" : STATUS_STYLE[hrStatus].text)} />
-              <span className="font-display text-6xl font-extrabold text-foreground tabular">{today.hr}</span>
+            <Ring
+              value={today.hr}
+              max={140}
+              size={230}
+              stroke={16}
+              status={hrStatus === "normal" ? undefined : hrStatus}
+            >
+              <Heart
+                className={cn(
+                  "size-8 animate-heartbeat fill-current",
+                  hrStatus === "normal" ? "text-destructive" : STATUS_STYLE[hrStatus].text,
+                )}
+              />
+              <span className="font-display text-6xl font-extrabold text-foreground tabular">
+                {today.hr}
+              </span>
               <span className="font-display text-lg font-semibold text-muted-foreground">bpm</span>
             </Ring>
           </div>
@@ -240,7 +338,11 @@ function Dashboard() {
             icon={<Flame />}
             title="Today's health missions"
             sub={`Level ${lvl.level} · ${a.streak}-day streak`}
-            action={<span className="rounded-full bg-accent px-2.5 py-1 text-xs font-bold text-accent-foreground">+{earnedToday} XP</span>}
+            action={
+              <span className="rounded-full bg-accent px-2.5 py-1 text-xs font-bold text-accent-foreground">
+                +{earnedToday} XP
+              </span>
+            }
           />
           <Progress value={lvl.pct} className="mb-4 h-2" />
           <ul className="space-y-1.5">
@@ -251,11 +353,25 @@ function Dashboard() {
                   <button
                     type="button"
                     onClick={() => setTaskOverrides((o) => ({ ...o, [`${a.id}:${t.id}`]: !done }))}
-                    className={cn("flex w-full items-center gap-3 rounded-xl px-2.5 py-2 text-left transition-colors hover:bg-muted", done && "opacity-70")}
+                    className={cn(
+                      "flex w-full items-center gap-3 rounded-xl px-2.5 py-2 text-left transition-colors hover:bg-muted",
+                      done && "opacity-70",
+                    )}
                   >
-                    {done ? <CircleCheck className="size-5 shrink-0 text-success" /> : <Circle className="size-5 shrink-0 text-muted-foreground" />}
+                    {done ? (
+                      <CircleCheck className="size-5 shrink-0 text-success" />
+                    ) : (
+                      <Circle className="size-5 shrink-0 text-muted-foreground" />
+                    )}
                     <span className="flex-1">
-                      <span className={cn("block text-sm font-semibold text-foreground", done && "line-through")}>{t.title}</span>
+                      <span
+                        className={cn(
+                          "block text-sm font-semibold text-foreground",
+                          done && "line-through",
+                        )}
+                      >
+                        {t.title}
+                      </span>
                       <span className="block text-xs text-muted-foreground">
                         {t.time} · {t.duration}
                       </span>
@@ -290,7 +406,12 @@ function Dashboard() {
                 const Icon = METRIC_ICON[x.metric];
                 return (
                   <li key={x.id} className="flex items-center gap-3">
-                    <span className={cn("inline-flex size-10 shrink-0 items-center justify-center rounded-xl", STATUS_STYLE[x.severity].soft)}>
+                    <span
+                      className={cn(
+                        "inline-flex size-10 shrink-0 items-center justify-center rounded-xl",
+                        STATUS_STYLE[x.severity].soft,
+                      )}
+                    >
                       <Icon className={cn("size-[18px]", STATUS_STYLE[x.severity].text)} />
                     </span>
                     <div className="min-w-0 flex-1">
@@ -299,7 +420,11 @@ function Dashboard() {
                         {who.name} · {timeAgo(x.ts)}
                       </p>
                     </div>
-                    <span className={cn("text-sm font-bold tabular", STATUS_STYLE[x.severity].text)}>{x.value}</span>
+                    <span
+                      className={cn("text-sm font-bold tabular", STATUS_STYLE[x.severity].text)}
+                    >
+                      {x.value}
+                    </span>
                   </li>
                 );
               })}
@@ -336,7 +461,8 @@ function Dashboard() {
           <ol className="relative ml-1 space-y-3 border-l border-border pl-5">
             {ROUTINE.map((r) => {
               const [h, m] = r.time.split(":").map(Number);
-              const past = h + m / 60 < new Date(NOW).getUTCHours() + new Date(NOW).getUTCMinutes() / 60;
+              const past =
+                h + m / 60 < new Date(NOW).getUTCHours() + new Date(NOW).getUTCMinutes() / 60;
               return (
                 <li key={r.time} className="relative">
                   <span
@@ -345,7 +471,12 @@ function Dashboard() {
                       past ? "bg-muted-foreground/40" : "bg-primary",
                     )}
                   />
-                  <p className={cn("text-sm font-semibold", past ? "text-muted-foreground" : "text-foreground")}>
+                  <p
+                    className={cn(
+                      "text-sm font-semibold",
+                      past ? "text-muted-foreground" : "text-foreground",
+                    )}
+                  >
                     <span className="mr-2 font-display tabular">{r.time}</span>
                     {r.title}
                   </p>
@@ -377,7 +508,8 @@ function Dashboard() {
       )}
 
       <p className="flex items-center gap-2 text-xs text-muted-foreground">
-        <AstronautAvatar a={a} size="sm" /> Viewing {a.name}. Switch astronaut from the top bar to compare crew health.
+        <AstronautAvatar a={a} size="sm" /> Viewing {a.name}. Switch astronaut from the top bar to
+        compare crew health.
       </p>
     </div>
   );

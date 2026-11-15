@@ -2,24 +2,54 @@ import * as x from "react";
 import type { KeyboardEvent } from "react";
 import { jsx, jsxs } from "react/jsx-runtime";
 import { createFileRoute, Link as n } from "@tanstack/react-router";
-import { MousePointerClick as b, CircleCheck as p, TriangleAlert as m, Info as y, BookOpen as v } from "lucide-react";
+import {
+  MousePointerClick as b,
+  CircleCheck as p,
+  TriangleAlert as m,
+  Info as y,
+  BookOpen as v,
+} from "lucide-react";
 import { PageHeader as i, Surface as l, StatusPill as c } from "@/components/boo/ui";
-import { METRICS as a, STATUS_STYLE as o, statusOf as s, worstStatus as u, type MetricKey, type Status } from "@/lib/health/metrics";
+import {
+  METRICS as a,
+  STATUS_STYLE as o,
+  statusOf as s,
+  worstStatus as u,
+  type MetricKey,
+  type Status,
+} from "@/lib/health/metrics";
 import { latest as d, type DayRecord } from "@/lib/health/data";
 import { useAppState as g } from "@/lib/app-state";
 import { Button as _ } from "@/components/ui/button";
 import { cn as h } from "@/lib/utils";
 type Indicator = { label: string; value: string; status: Status };
-type BodyArea = { id: string; name: string; system: string; func: string; hazard: string; hazardTag: string; actions: string[]; indicators: (sample: DayRecord) => Indicator[] };
+type BodyArea = {
+  id: string;
+  name: string;
+  system: string;
+  func: string;
+  hazard: string;
+  hazardTag: string;
+  actions: string[];
+  indicators: (sample: DayRecord) => Indicator[];
+};
 export const Route = createFileRoute("/body")({
-  head: () => ({ meta: [
-    { title: "Body Map · BOO Astronaut Health" },
-    { name: "description", content: "Explore body systems, latest readings and the effects of spaceflight." },
-    { property: "og:title", content: "Body Map · BOO Astronaut Health" },
-    { property: "og:description", content: "Explore body systems, latest readings and the effects of spaceflight." },
-    { property: "og:type", content: "website" },
-    { name: "twitter:card", content: "summary_large_image" },
-  ] }),
+  head: () => ({
+    meta: [
+      { title: "Body Map · BOO Astronaut Health" },
+      {
+        name: "description",
+        content: "Explore body systems, latest readings and the effects of spaceflight.",
+      },
+      { property: "og:title", content: "Body Map · BOO Astronaut Health" },
+      {
+        property: "og:description",
+        content: "Explore body systems, latest readings and the effects of spaceflight.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: D,
 });
 const S = (e: MetricKey, t: DayRecord): Indicator => ({
@@ -166,12 +196,7 @@ const S = (e: MetricKey, t: DayRecord): Indicator => ({
         {
           label: `Muscle mass vs pre-flight`,
           value: `${e.muscleMass}%`,
-          status:
-            e.muscleMass < 94
-              ? `critical`
-              : e.muscleMass < 97
-                ? `watch`
-                : `normal`,
+          status: e.muscleMass < 94 ? `critical` : e.muscleMass < 97 ? `watch` : `normal`,
         },
         {
           label: `Exercise today`,
@@ -196,8 +221,7 @@ const S = (e: MetricKey, t: DayRecord): Indicator => ({
         {
           label: `Bone density change`,
           value: `${e.boneLoss.toFixed(1)}%`,
-          status:
-            e.boneLoss < -8 ? `critical` : e.boneLoss < -4 ? `watch` : `normal`,
+          status: e.boneLoss < -8 ? `critical` : e.boneLoss < -4 ? `watch` : `normal`,
         },
         { label: `Urine calcium`, value: `212 mg/day`, status: `normal` },
       ],
@@ -230,14 +254,20 @@ const S = (e: MetricKey, t: DayRecord): Indicator => ({
     watch: `fill-warning/45 hover:fill-warning/65`,
     critical: `fill-destructive/45 hover:fill-destructive/65`,
   };
-function E({ statuses: e, selected: t, onSelect: n }: { statuses: Record<string, Status>; selected: string; onSelect: (id: string) => void }) {
+function E({
+  statuses: e,
+  selected: t,
+  onSelect: n,
+}: {
+  statuses: Record<string, Status>;
+  selected: string;
+  onSelect: (id: string) => void;
+}) {
   let r = (n: string) =>
       h(
         `cursor-pointer transition-all duration-300 outline-none`,
         T[e[n]],
-        t === n
-          ? `stroke-primary [stroke-width:2.5]`
-          : `stroke-card [stroke-width:1.5]`,
+        t === n ? `stroke-primary [stroke-width:2.5]` : `stroke-card [stroke-width:1.5]`,
       ),
     i = (e: string) => ({
       role: `button`,
@@ -271,9 +301,7 @@ function E({ statuses: e, selected: t, onSelect: n }: { statuses: Record<string,
         ...i(`skin`),
         className: h(
           `cursor-pointer`,
-          t === `skin`
-            ? `stroke-primary [stroke-width:2.5]`
-            : `stroke-border [stroke-width:1.5]`,
+          t === `skin` ? `stroke-primary [stroke-width:2.5]` : `stroke-border [stroke-width:1.5]`,
         ),
         fill: `url(#skinGrad)`,
         children: [
@@ -413,10 +441,7 @@ function D() {
                 children: [
                   (0, w.jsxs)(`span`, {
                     className: `inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground`,
-                    children: [
-                      (0, w.jsx)(b, { className: `size-4` }),
-                      ` Tap a body area`,
-                    ],
+                    children: [(0, w.jsx)(b, { className: `size-4` }), ` Tap a body area`],
                   }),
                   (0, w.jsxs)(`div`, {
                     className: `flex gap-2`,
@@ -501,10 +526,7 @@ function D() {
                         (0, w.jsxs)(
                           `div`,
                           {
-                            className: h(
-                              `rounded-2xl border p-4`,
-                              o[e.status].pill,
-                            ),
+                            className: h(`rounded-2xl border p-4`, o[e.status].pill),
                             children: [
                               (0, w.jsx)(`p`, {
                                 className: `text-xs font-semibold`,

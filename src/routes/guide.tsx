@@ -1,20 +1,43 @@
 import { jsx, jsxs } from "react/jsx-runtime";
 import { createFileRoute } from "@tanstack/react-router";
-import { Radiation as c, Brain as s, Earth as f, Orbit as re, Wind as l, Ruler as p, PhoneCall as ie } from "lucide-react";
+import {
+  Radiation as c,
+  Brain as s,
+  Earth as f,
+  Orbit as re,
+  Wind as l,
+  Ruler as p,
+  PhoneCall as ie,
+} from "lucide-react";
 import { PageHeader as r, Surface as a } from "@/components/boo/ui";
 import { METRICS as i, type MetricKey } from "@/lib/health/metrics";
 import { METRIC_ICON as u } from "@/components/boo/metric-icons";
-import { Accordion as Me, AccordionItem as X, AccordionTrigger as Z, AccordionContent as Q } from "@/components/ui/accordion";
+import {
+  Accordion as Me,
+  AccordionItem as X,
+  AccordionTrigger as Z,
+  AccordionContent as Q,
+} from "@/components/ui/accordion";
 const C = { jsx, jsxs };
 export const Route = createFileRoute("/guide")({
-  head: () => ({ meta: [
-    { title: "Health Guide · BOO Astronaut Health" },
-    { name: "description", content: "Understand spaceflight hazards and how to measure and interpret every health indicator." },
-    { property: "og:title", content: "Health Guide · BOO Astronaut Health" },
-    { property: "og:description", content: "Understand spaceflight hazards and how to measure and interpret every health indicator." },
-    { property: "og:type", content: "website" },
-    { name: "twitter:card", content: "summary_large_image" },
-  ] }),
+  head: () => ({
+    meta: [
+      { title: "Health Guide · BOO Astronaut Health" },
+      {
+        name: "description",
+        content:
+          "Understand spaceflight hazards and how to measure and interpret every health indicator.",
+      },
+      { property: "og:title", content: "Health Guide · BOO Astronaut Health" },
+      {
+        property: "og:description",
+        content:
+          "Understand spaceflight hazards and how to measure and interpret every health indicator.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Pe,
 });
 var Ne = [
@@ -267,30 +290,15 @@ function Pe() {
                             children: [
                               (0, C.jsxs)(`span`, {
                                 className: `rounded-full bg-success/10 px-3 py-1 text-success`,
-                                children: [
-                                  `Normal `,
-                                  t.normal[0],
-                                  `–`,
-                                  t.normal[1],
-                                ],
+                                children: [`Normal `, t.normal[0], `–`, t.normal[1]],
                               }),
                               (0, C.jsxs)(`span`, {
                                 className: `rounded-full bg-warning/15 px-3 py-1 text-warning-foreground`,
-                                children: [
-                                  `Watch `,
-                                  t.watch[0],
-                                  `–`,
-                                  t.watch[1],
-                                ],
+                                children: [`Watch `, t.watch[0], `–`, t.watch[1]],
                               }),
                               (0, C.jsxs)(`span`, {
                                 className: `rounded-full bg-destructive/10 px-3 py-1 text-destructive`,
-                                children: [
-                                  `Critical outside `,
-                                  t.watch[0],
-                                  `–`,
-                                  t.watch[1],
-                                ],
+                                children: [`Critical outside `, t.watch[0], `–`, t.watch[1]],
                               }),
                             ],
                           }),
