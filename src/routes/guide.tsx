@@ -74,27 +74,27 @@ var Ne = [
   ],
   $: Record<MetricKey, { how: string; why: string; call: string }> = {
     hr: {
-      how: `Worn BOO band reads continuously. For a manual check, sit still for 5 min and count your wrist pulse for 30 s × 2.`,
+      how: `The BOO smart helmet reads it continuously from the forehead. For a manual check, sit still for 5 min and count your wrist pulse for 30 s × 2.`,
       why: `Shows heart workload, fever, stress and dehydration.`,
       call: `Resting above 110 or below 45 bpm, or with chest pain.`,
     },
     temp: {
-      how: `Band skin sensor every 5 min. Confirm with the oral thermometer from kit drawer M-1.`,
+      how: `Helmet forehead sensor every 5 min. Confirm with the oral thermometer from kit drawer M-1.`,
       why: `Early sign of infection — immunity drops in space.`,
       call: `Above 38.0 °C, or above 37.5 °C for more than 24 h.`,
     },
     spo2: {
-      how: `Optical sensor on the band, or finger clip after EVA.`,
+      how: `Optical sensor inside the helmet, or finger clip after EVA.`,
       why: `Tells how well oxygen reaches your blood.`,
       call: `Below 92 % after re-checking the sensor.`,
     },
     sys: {
-      how: `Cuff on left arm, seated, feet flat (or strapped). Rest 5 min first.`,
+      how: `Manual now · Auto in next helmet version. Cuff on left arm, seated, feet flat (or strapped). Rest 5 min first, then log it with "Log a reading".`,
       why: `Fluid shifts and stress change blood pressure.`,
       call: `140/90 mmHg or higher twice in a row.`,
     },
     dia: {
-      how: `Measured with systolic using the same cuff.`,
+      how: `Manual now · Auto in next helmet version. Measured with systolic using the same cuff.`,
       why: `The pressure between heartbeats.`,
       call: `90 mmHg or higher twice in a row.`,
     },
@@ -104,7 +104,7 @@ var Ne = [
       call: `Above 180 or below 60 mg/dL.`,
     },
     sleep: {
-      how: `Band tracks movement and HR at night. Add a short note on how rested you feel.`,
+      how: `The helmet tracks head movement and HR at night. Add a short note on how rested you feel.`,
       why: `Fatigue slows reaction time and raises error risk.`,
       call: `Under 6 h for 3 nights in a row.`,
     },

@@ -29,7 +29,7 @@ export const Route = createFileRoute("/about")({
 const architecture = [
   {
     icon: Watch,
-    title: "BOO band & manual logs",
+    title: "BOO smart helmet & manual logs",
     sub: "HR, SpO₂, temperature, BP, sleep, mood, water",
   },
   {
@@ -89,7 +89,7 @@ function About() {
         <Surface>
           <SectionHead title="Our solution" />
           <p className="text-sm leading-relaxed text-muted-foreground">
-            BOO is a smart health companion. A wearable band and simple manual logs feed one app
+            BOO is a smart health companion. A smart helmet and simple manual logs feed one app
             that compares every value with reference ranges, colors it green, amber or red, raises
             Info, Warning or Critical alerts with a clear next step, and lets the astronaut
             acknowledge or escalate to the flight surgeon. In Mars Mode it switches to on-board

@@ -169,7 +169,7 @@ function Dashboard() {
               Good afternoon, <span className="text-gradient-primary">{a.name.split(" ")[0]}</span>
             </h1>
             <p className="mt-3 max-w-lg text-muted-foreground">
-              Mission day {a.missionDay} of {a.missionLength}. Your band took{" "}
+              Mission day {a.missionDay} of {a.missionLength}. Your helmet took{" "}
               {(samples.length * 3).toLocaleString("en-US")} readings today. Here is how your body
               is doing in {env.gravity.toLowerCase()}.
             </p>
@@ -311,7 +311,7 @@ function Dashboard() {
           <SectionHead
             icon={<Zap />}
             title="Today · heart rate & oxygen"
-            sub="5-minute samples from your BOO band since 00:00 mission time"
+            sub="5-minute samples from your BOO helmet since 00:00 mission time"
             action={
               <Button asChild variant="soft" size="sm">
                 <Link to="/analytics">Full analytics</Link>

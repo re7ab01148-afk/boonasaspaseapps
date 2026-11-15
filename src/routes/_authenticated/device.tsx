@@ -27,9 +27,9 @@ export const Route = createFileRoute("/_authenticated/device")({
   head: () => ({
     meta: [
       { title: "Device · BOO Astronaut Health" },
-      { name: "description", content: "BOO Band S2 battery, sensors and settings." },
+      { name: "description", content: "BOO Helmet S2 battery, sensors and settings." },
       { property: "og:title", content: "Device · BOO Astronaut Health" },
-      { property: "og:description", content: "BOO Band S2 battery, sensors and settings." },
+      { property: "og:description", content: "BOO Helmet S2 battery, sensors and settings." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -54,8 +54,8 @@ function Device() {
     <div className="space-y-6">
       <PageHeader
         eyebrow="Device"
-        title="BOO Band S2"
-        description="Your wrist sensor records heart rate, oxygen, temperature, blood pressure, movement and radiation."
+        title="BOO Helmet S2"
+        description="Your smart helmet records heart rate, oxygen, temperature, breathing, head movement and radiation. Blood pressure and blood sugar are logged by hand for now."
       />
       <div className="grid gap-6 lg:grid-cols-[360px_1fr]">
         <Surface className="flex flex-col items-center bg-gradient-sky text-center">
@@ -132,7 +132,7 @@ function Device() {
               {DEVICE.sensors.map((s) => (
                 <li key={s.name} className="flex items-center justify-between gap-3 py-3 text-sm">
                   <span className="font-semibold text-foreground">{s.name}</span>
-                  <span className="flex shrink-0 items-center gap-3">
+                  <span className="flex items-center justify-end gap-3 text-right">
                     <span className="hidden text-xs text-muted-foreground sm:inline">
                       {s.accuracy}
                     </span>
@@ -141,7 +141,9 @@ function Device() {
                         "rounded-full px-2 py-0.5 text-xs font-bold",
                         s.status === "OK"
                           ? "bg-success/10 text-success"
-                          : "bg-warning/10 text-warning-foreground",
+                          : s.status.startsWith("Manual")
+                            ? "bg-accent text-accent-foreground"
+                            : "bg-warning/10 text-warning-foreground",
                       )}
                     >
                       {s.status}
@@ -168,7 +170,7 @@ function Device() {
                 key: "haptic",
                 icon: Vibrate,
                 label: "Haptic alerts",
-                sub: "Vibrate the band on critical alerts",
+                sub: "Vibrate the helmet on critical alerts",
               },
               {
                 key: "reminders",
