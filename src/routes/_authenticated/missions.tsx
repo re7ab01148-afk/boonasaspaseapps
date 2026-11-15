@@ -66,7 +66,7 @@ function MissionsPage() {
   const earned = TASKS.filter((t) => done(t.id)).reduce((sum, t) => sum + t.xp, 0);
   const possible = TASKS.reduce((sum, t) => sum + t.xp, 0);
   const level = levelFromXp(astronaut.xp + earned);
-  const xpData = HISTORY[astronaut.id].slice(-14).map((row) => ({
+  const xpData = historyOf(astronaut.id).slice(-14).map((row) => ({
     day: fmtWeekday(row.ts),
     xp: Math.round(300 + row.exercise * 2 + (row.sleep - 6) * 40 + (row.mood - 3) * 50),
   }));

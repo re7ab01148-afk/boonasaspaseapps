@@ -97,7 +97,7 @@ function Dashboard() {
   const { astronaut: a, marsMode, alerts } = useAppState();
   const today = latest(a.id);
   const yesterday = previous(a.id);
-  const last14 = HISTORY[a.id].slice(-14);
+  const last14 = historyOf(a.id).slice(-14);
   const samples = useMemo(() => todaySamples(a.id), [a.id]);
   const status = overallStatus(a.id);
   const env = ENVIRONMENTS[a.env];

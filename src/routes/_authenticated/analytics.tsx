@@ -77,7 +77,7 @@ function AnalyticsPage() {
   const days = ranges.find((r) => r.id === range)?.days ?? 30;
   const data = useMemo(
     () =>
-      HISTORY[astronaut.id]
+      historyOf(astronaut.id)
         .slice(-days)
         .map((row) => ({ ...row, label: days <= 7 ? fmtWeekday(row.ts) : fmtShortDate(row.ts) })),
     [astronaut.id, days],
