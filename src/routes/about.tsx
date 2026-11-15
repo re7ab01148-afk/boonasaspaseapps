@@ -7,8 +7,7 @@ import {
   LayoutDashboard,
   Cloud,
   Users,
-  ExternalLink,
-} from "lucide-react";
+  ExternalLink, GraduationCap } from "lucide-react";
 import { PageHeader, SectionHead, Surface } from "@/components/boo/ui";
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -162,21 +161,17 @@ function About() {
         </Surface>
       </div>
       <Surface>
-        <SectionHead title="The team" sub="Team BOO · NASA Space Apps Challenge 2026" />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {["Team lead & product", "Health & science research", "Design", "Development"].map(
-            (role, i) => (
-              <div key={role} className="flex items-center gap-3 rounded-2xl bg-muted p-4">
-                <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-accent font-display font-bold text-primary">
-                  B{i + 1}
-                </span>
-                <div>
-                  <p className="text-sm font-bold text-foreground">Team member</p>
-                  <p className="text-xs text-muted-foreground">{role}</p>
-                </div>
-              </div>
-            ),
-          )}
+        <SectionHead icon={<GraduationCap />} title="Who made BOO" sub="NASA Space Apps Challenge 2026" />
+        <p className="text-sm leading-relaxed text-muted-foreground">
+          BOO was created by Egyptian students from Elsewedy University of Technology and Badr University for the NASA
+          Space Apps Challenge 2026 hackathon (6th of October).
+        </p>
+        <div className="mt-4 flex flex-wrap items-center gap-3 rounded-2xl bg-muted p-4">
+          <span className="text-xs font-bold tracking-[0.18em] text-primary uppercase">Team</span>
+          <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-gradient-primary font-display text-sm font-bold text-primary-foreground">
+            R
+          </span>
+          <p className="text-sm font-bold text-foreground">Rehab Mohamed Safwat</p>
         </div>
       </Surface>
     </div>
